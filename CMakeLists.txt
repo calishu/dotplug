@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(dotplug
   src/main.cpp
+  src/utils/cli_utils.cpp
 )
 
 target_include_directories(dotplug PRIVATE src/headers external)
