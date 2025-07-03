@@ -1,0 +1,28 @@
+name: Bug Report
+description: File a bug report and help improving the project!
+
+body: 
+  - type: input
+    id: distro
+    attributes:
+      label: "What Linux distro did this happen on?"
+      value: "Arch btw."
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "What happened?"
+      description: "What did you do and what did you expect? What went wrong?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-message
+    attributes:
+      label: "Give me your logs! ミ●﹏☉ミ"
+      description: "Paste terminal output, error messages, crash logs or whatever."
+      placeholder: "Use code blocks (```) for readability!"
+    validations:
+      required: false

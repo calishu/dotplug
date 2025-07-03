@@ -1,0 +1,35 @@
+name: Feature Request
+description: Suggest an idea or improvement.
+
+body:
+  - type: input
+    id: title
+    attributes:
+      label: "Short title"
+      placeholder: "Add support for XYZ"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "What do you want to see?"
+      description: "Please describe the feature."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Context or extra info"
+      description: "Can you give us any reference e.g. screenshots or whatsoever"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before submitting..."
+      options:
+        - label: "Does it a open issue/PR already exist?"
+          required: true
