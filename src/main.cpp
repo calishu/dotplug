@@ -1,4 +1,5 @@
 #include "CLI11.hpp"
+#include "list.hpp"
 #include <iostream>
 #include <unistd.h>
 #include <string>
@@ -16,7 +17,6 @@ int main(int argc, char** argv) {
   std::string value; // stuff like names or links.
   bool forced = false;
   
-
   auto list_cmd = app.add_subcommand("list", "Shows a list of all installed configurations.");
 
   auto install_cmd = app.add_subcommand("install", "Install a dotfile configuration from remote repository.");
@@ -43,6 +43,10 @@ int main(int argc, char** argv) {
 
     if(proceed == "N" || proceed == "n" || proceed.empty()) return 0;
   }
+
+  
+  // actions
+  if (&list_cmd) list();
 
   return 0;
 }
