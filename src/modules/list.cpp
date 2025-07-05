@@ -1,5 +1,7 @@
 #include "list.hpp"
 #include "toml.hpp"
+#include "config.hpp"
+#include "settings.hpp"
 #include <filesystem>
 #include <iostream>
 #include <cstdlib>
@@ -7,25 +9,13 @@
 #include <format>
 
 void list() {
-  const char* home = std::getenv("HOME");
-  if (!home) {
-    std::cerr << "HOME env variable not set.\n";
-    return;
-  }
-
-  std::filesystem::path dir = std::string(home) + "/Dokumente/Projekte/dotplug/test_config/";
-
   size_t i = 1;
-  for (const auto & entry : std::filesystem::directory_iterator(dir)) {
-    auto config_path = entry.path() / "config.toml";
+  for (const auto & entry : std::filesystem::directory_iterator(std::filesystem::path(dotfiles_path))) {
     toml::table config;
+    size_t error_code;
 
-    try {
-      config = toml::parse_file(config_path.string());
-    } catch (const toml::parse_error& err) {
-      std::cerr << "Failed to parse " << config_path << ": " << err.description() << "\n";
-      continue;
-    }
+    std::pair<toml::table&, size_t&>(config, error_code) = parse_config(entry.path().filename().string());
+    if (error_code == 1) return;
 
     std::string_view name = config["dotplug"]["name"].value_or(std::string_view("Unknown Name"));
     std::string_view description = config["dotplug"]["description"].value_or(std::string_view(""));
