@@ -38,6 +38,7 @@ struct ValidationResult {
 };
 
 void print_validation(ValidationResult& result) {
+  if (result.log.empty()) std::cout << "Everything is fine with the configuration." << std::endl;
   for (const auto& e : result.log) {
     std::cout << (e.type == ValidationResult::Type::Error ? "[ERROR] " : "[WARNING] ") << e.message << "\n";
   }
