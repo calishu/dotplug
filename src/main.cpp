@@ -1,3 +1,6 @@
+#include "validator.hpp"
+#include "settings.hpp"
+#include "config.hpp"
 #include "CLI11.hpp"
 #include "list.hpp"
 #include <iostream>
@@ -18,6 +21,9 @@ int main(int argc, char** argv) {
   bool forced = false;
   
   auto list_cmd = app.add_subcommand("list", "Shows a list of all installed configurations.");
+
+  auto validate_cmd = app.add_subcommand("validate", "Check if the configuration config is valid.");
+  validate_cmd->add_option("name", value, "The name of the dotfile configuration you want to check.")->required();
 
   auto install_cmd = app.add_subcommand("install", "Install a dotfile configuration from remote repository.");
   install_cmd->add_option("url", value, "The Git URL of the remote repository.")->required();
@@ -46,7 +52,15 @@ int main(int argc, char** argv) {
 
   
   // actions
-  if (&list_cmd) list();
+  if (list_cmd->parsed()) list();
+  else if (validate_cmd->parsed()) {
+    auto parsed = parse_config(value);
+    if (parsed.second == 1) {
+      return 1;
+    }
+    ValidationResult validation_result = validator(parsed.first);
+    print_validation(validation_result);
+  }
 
   return 0;
 }
