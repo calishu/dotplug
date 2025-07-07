@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(dotplug
   src/main.cpp
+  src/globals.cpp
   src/modules/list.cpp
   src/modules/validator.cpp
   src/utils/config.cpp
@@ -13,6 +14,7 @@ add_executable(dotplug
 
 add_compile_definitions(
   DOTFILES_PATH="/Dokumente/Projekte/dotplug/test_config/"
+  DESTINATION_PATH="/Dokumente/Projekte/dotplug/target/"
 )
 
 target_include_directories(dotplug PRIVATE src/headers external)
