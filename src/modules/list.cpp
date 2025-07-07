@@ -12,9 +12,9 @@ void list() {
   size_t i = 1;
   for (const auto & entry : std::filesystem::directory_iterator(std::filesystem::path(dotfiles_path))) {
     toml::table config;
-    size_t error_code;
+    int error_code;
 
-    std::pair<toml::table&, size_t&>(config, error_code) = parse_config(entry.path().filename().string());
+    std::pair<toml::table&, int&>(config, error_code) = parse_config(entry.path().filename().string());
     if (error_code == 1) return;
 
     std::string_view name = config["dotplug"]["name"].value_or(std::string_view("Unknown Name"));

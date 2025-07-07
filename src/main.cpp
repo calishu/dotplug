@@ -1,5 +1,6 @@
 #include "validator.hpp"
 #include "settings.hpp"
+#include "globals.hpp"
 #include "config.hpp"
 #include "CLI11.hpp"
 #include "list.hpp"
@@ -48,6 +49,10 @@ int main(int argc, char** argv) {
     std::getline(std::cin, proceed);
 
     if(proceed == "N" || proceed == "n" || proceed.empty()) return 0;
+  }
+
+  if (!value.empty()) {
+    p_value = &value;
   }
 
   

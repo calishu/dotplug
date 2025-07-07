@@ -1,4 +1,5 @@
 #include "toml.hpp"
+#include "config.hpp"
 #include <iostream>
 #include <format>
 #include <string>
@@ -65,12 +66,16 @@ ValidationResult validator(const toml::table& file) {
 
     if (!file["dotplug"][dep_name] || dependencies->empty()) {
       output.add_error(format("Dependency section '{}' is missing", dep_name));
-      continue;
-    }
+    } 
 
     const auto& dep_entry = file["dotplug"][dep_name]["destination"];
     if (!dep_entry)
       output.add_error("You need to enter a destination for your dependency");
+
+    auto dep_source_result = dep_source(file, dep_name);
+    if (dep_source_result.second == 1) {
+      output.add_error(format("Couldn't find the source of '{}'", dep_name));
+    }
   }
 
   return output; 
