@@ -1,14 +1,16 @@
-## DogPlug
+# DogPlug
 
 > [!NOTE]
-> This project isn't done and still requires much work and testing.
+> This project is actively under development and requires further work and testing.
 
-Dotplug is a easy-to-use dotfile manager for your most favourite configurations.
+DogPlug is a user-friendly dotfile manager designed to help you organize and manage your favorite configuration files effortlessly.
 
-### Information
+## Getting Started
 
-- If you want to contribute to the project, refer to the [**Contribution Guide**](https://github.com/calishu/dotplug/tree/main/.github/CONTRIBUTING.md)
-- It is recommended to read the [**code of conduct**](https://github.com/calishu/dotplug/tree/main/.github/CODE_OF_CONDUCT.md) so can create a better community.
-- Feel free to open an [**issue**](https://github.com/calishu/dotplug/issues)! :D
+* Interested in contributing? Check out our [**Contribution Guide**](https://github.com/calishu/dotplug/tree/main/.github/CONTRIBUTING.md) for guidelines and best practices.
+* To foster a welcoming community, please read our [**Code of Conduct**](https://github.com/calishu/dotplug/tree/main/.github/CODE_OF_CONDUCT.md).
+* Found a bug or have a feature request? Feel free to open an [**Issue**](https://github.com/calishu/dotplug/issues). We'd love to hear from you!
 
-> Dotplug is licensed under the MIT License! Check out [the License](https://github.com/calishu/dotplug/tree/main/LICENSE) for more information!
+## License
+
+DogPlug is open source and distributed under the [MIT License](https://github.com/calishu/dotplug/tree/main/LICENSE).
