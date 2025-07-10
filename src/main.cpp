@@ -23,6 +23,10 @@ int main(int argc, char** argv) {
   std::string value; // stuff like names or links.
   std::vector<std::string> dependencies;
   bool forced = false;
+
+  auto add_force_flag = [&](CLI::App* cmd) {
+    cmd->add_flag("-f,--force", forced, "Force the action and ignore warnings (CAUTION!)");
+  };
   
   auto list_cmd = app.add_subcommand("list", "Shows a list of all installed configurations.");
 
@@ -42,8 +46,7 @@ int main(int argc, char** argv) {
   new_cmd->add_option("name", value, "The name of the dotfile configuration you want to create.")->required();
   new_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")->expected(-1)->required();
 
-  app.add_flag("-f,--force", forced, "Force the action and ignore every possible warning. (CAUTION!)");
-
+  add_force_flag(remove_cmd);
 
   CLI11_PARSE(app, argc, argv);
 
