@@ -1,5 +1,5 @@
 #include "toml.hpp"
-#include "globals.hpp"
+#include "context.hpp"
 #include "settings.hpp"
 #include <filesystem>
 #include <stdlib.h>
@@ -10,7 +10,7 @@
 #include <string>
 
 int new_config(const std::vector<std::string> &deps) {
-  std::string path = dotfiles_path + *p_value;
+  std::string path = dotfiles_path + ctx->name;
 
   if (std::filesystem::exists(path) && std::filesystem::is_directory(path)) {
     std::cout << "The config folder already exists. Please try another one.\n";
@@ -30,7 +30,7 @@ int new_config(const std::vector<std::string> &deps) {
   toml::table dotplug;
   const char* user = getenv("USER");
   
-  dotplug.insert("name", *p_value);
+  dotplug.insert("name", ctx->name);
   dotplug.insert("author", user ? user : "unknown");
 
   toml::array deps_array;

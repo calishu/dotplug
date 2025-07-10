@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(dotplug
   src/main.cpp
-  src/globals.cpp
+  src/context.cpp
   src/modules/list.cpp
   src/modules/remove.cpp
   src/modules/validator.cpp

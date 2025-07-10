@@ -1,7 +1,7 @@
 #include "new_config.hpp"
 #include "validator.hpp"
 #include "settings.hpp"
-#include "globals.hpp"
+#include "context.hpp"
 #include "remove.hpp"
 #include "config.hpp"
 #include "CLI11.hpp"
@@ -55,10 +55,10 @@ int main(int argc, char** argv) {
     if(proceed == "N" || proceed == "n" || proceed.empty()) return 0;
   }
 
-  if (!value.empty()) {
-    p_value = &value;
-  }
-
+  if (!value.empty())
+    ctx->name = value;
+  if (forced)
+    ctx->forced = forced;
   
   // actions
   if (list_cmd->parsed()) list();

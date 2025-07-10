@@ -1,5 +1,5 @@
 #include "toml.hpp"
-#include "globals.hpp"
+#include "context.hpp"
 #include "settings.hpp"
 #include <filesystem>
 #include <iostream>
@@ -26,8 +26,8 @@ std::pair<std::string, int> dep_source(const toml::table& config, const std::str
   std::string source_path = source_node.is_string() ? source_node.value_or("") : "";
 
   std::filesystem::path source = source_path.empty()
-    ? dotfiles_path + *p_value + "/" + dep_name
-    : dotfiles_path + *p_value + "/" + source_path;
+    ? dotfiles_path + ctx->name + "/" + dep_name
+    : dotfiles_path + ctx->name + "/" + source_path;
 
   if (std::filesystem::exists(source) && std::filesystem::is_directory(source))
     return { std::filesystem::absolute(source), 0 };

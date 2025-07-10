@@ -1,11 +1,11 @@
 #include "settings.hpp"
-#include "globals.hpp"
+#include "context.hpp"
 #include <filesystem>
 #include <iostream>
 #include <string>
 
 int remove_config() {
-  std::string path = dotfiles_path + *p_value;
+  std::string path = dotfiles_path + ctx->name;
 
   if (!std::filesystem::exists(path)) {
     std::cout << "The config doesn't exist." << std::endl;
