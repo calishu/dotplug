@@ -1,3 +1,4 @@
+#include "new_config.hpp"
 #include "validator.hpp"
 #include "settings.hpp"
 #include "globals.hpp"
@@ -19,6 +20,7 @@ int main(int argc, char** argv) {
   app.require_subcommand();
 
   std::string value; // stuff like names or links.
+  std::vector<std::string> dependencies;
   bool forced = false;
   
   auto list_cmd = app.add_subcommand("list", "Shows a list of all installed configurations.");
@@ -37,6 +39,7 @@ int main(int argc, char** argv) {
 
   auto new_cmd = app.add_subcommand("new", "Creates a new dotfile configuration.");
   new_cmd->add_option("name", value, "The name of the dotfile configuration you want to create.")->required();
+  new_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")->expected(-1)->required();
 
   app.add_flag("-f,--force", forced, "Force the action and ignore every possible warning. (CAUTION!)");
 
@@ -66,6 +69,7 @@ int main(int argc, char** argv) {
     ValidationResult validation_result = validator(parsed.first);
     print_validation(validation_result);
   }
+  else if (new_cmd->parsed()) new_config(dependencies);
 
   return 0;
 }

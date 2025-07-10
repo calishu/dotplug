@@ -9,6 +9,7 @@ add_executable(dotplug
   src/globals.cpp
   src/modules/list.cpp
   src/modules/validator.cpp
+  src/modules/new_config.cpp
   src/utils/config.cpp
 )
 
