@@ -2,6 +2,7 @@
 #include "validator.hpp"
 #include "settings.hpp"
 #include "globals.hpp"
+#include "remove.hpp"
 #include "config.hpp"
 #include "CLI11.hpp"
 #include "list.hpp"
@@ -70,6 +71,7 @@ int main(int argc, char** argv) {
     print_validation(validation_result);
   }
   else if (new_cmd->parsed()) new_config(dependencies);
+  else if (remove_cmd->parsed()) remove_config();
 
   return 0;
 }
