@@ -1,9 +1,9 @@
-# DogPlug
+# DotPlug
 
 > [!NOTE]
 > This project is actively under development and requires further work and testing.
 
-DogPlug is a user-friendly dotfile manager designed to help you organize and manage your favorite configuration files effortlessly.
+DotPlug is a user-friendly dotfile manager designed to help you organize and manage your favorite configuration files effortlessly.
 
 ## Installation
 
@@ -25,4 +25,4 @@ Conan will automatically install the dependencies thanks to the meson script.
 
 ## License
 
-DogPlug is open source and distributed under the [MIT License](https://github.com/calishu/dotplug/tree/main/LICENSE).
+DotPlug is open source and distributed under the [MIT License](https://github.com/calishu/dotplug/tree/main/LICENSE).
