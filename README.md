@@ -12,10 +12,11 @@ To build **dotplug** from source, make sure you have [`git`](https://git-scm.com
 ```bash
 git clone https://github.com/calishu/dotplug.git
 cd dotplug
+conan install . --output-folder=build --build=missing
 meson setup build
 meson compile -C build
 ```
-Conan will automatically install the dependencies thanks to the meson script.
+If you want to reconfigure the meson build using the `--reconfigure` flag, the meson script will install the Conan dependencies automatically for you.
 
 ## For Contributors
 
