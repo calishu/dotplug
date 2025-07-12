@@ -32,4 +32,4 @@ body:
       label: "Before submitting..."
       options:
         - label: "Does it a open issue/PR already exist?"
-          required: true
+          required: false
