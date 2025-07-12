@@ -4,7 +4,7 @@
 #include "context.hpp"
 #include "remove.hpp"
 #include "config.hpp"
-#include "CLI11.hpp"
+#include "CLI/CLI.hpp"
 #include "list.hpp"
 #include <iostream>
 #include <unistd.h>

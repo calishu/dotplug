@@ -1,0 +1,7 @@
+[requires]
+tomlplusplus/3.4.0
+cli11/2.5.0
+
+[generators]
+MesonToolchain
+PkgConfigDeps
