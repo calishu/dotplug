@@ -8,7 +8,7 @@ DogPlug is a user-friendly dotfile manager designed to help you organize and man
 ## Installation
 
 ### Build from Source
-To build **dotplug** from source, make sure you have `git`, `meson`, and `conan` installed on your system.
+To build **dotplug** from source, make sure you have [`git`](https://git-scm.com/), [`meson`](https://mesonbuild.com/), and [`conan`](https://conan.io/) installed on your system.
 ```bash
 git clone https://github.com/calishu/dotplug.git
 cd dotplug
