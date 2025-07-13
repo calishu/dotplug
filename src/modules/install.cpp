@@ -5,6 +5,7 @@
 #include "context.hpp"
 #include "settings.hpp"
 #include "validator.hpp"
+#include "format_check.hpp"
 #include <string_view>
 #include <filesystem>
 #include <iostream>
@@ -12,6 +13,11 @@
 #include <string>
 
 int install() {
+  if (!is_valid_url()) {
+    std::cout << "The provided value is not a URL!" << std::endl;
+    return 1;
+  }
+
   size_t last_slash = ctx->name.find_last_of("/");
   if (last_slash == std::string::npos) return 1;
 
