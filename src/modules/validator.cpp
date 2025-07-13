@@ -13,22 +13,6 @@ struct ValidationResult {
   };
   std::vector<Entries> log;
 
-  /*bool has_errors() const {
-    for (const auto& e : log) {
-      if (e.type == Type::Error)
-        return true;
-    }
-    return false;
-  }
-
-  bool has_warnings() const {
-    for (const auto& e : log) {
-      if (e.type == Type::Warning)
-        return true;
-    }
-    return false;
-  }*/
-
   void add_error(std::string msg) {
     log.push_back({ msg, Type::Error });
   }
