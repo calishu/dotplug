@@ -1,6 +1,7 @@
 #include "new_config.hpp"
 #include "validator.hpp"
 #include "settings.hpp"
+#include "install.hpp"
 #include "context.hpp"
 #include "remove.hpp"
 #include "config.hpp"
@@ -75,6 +76,7 @@ int main(int argc, char** argv) {
   }
   else if (new_cmd->parsed()) new_config(dependencies);
   else if (remove_cmd->parsed()) remove_config();
+  else if (install_cmd->parsed()) install();
 
   return 0;
 }

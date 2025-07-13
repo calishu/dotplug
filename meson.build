@@ -11,10 +11,12 @@ run_command(
 
 cli11_dep = dependency('CLI11', method: 'pkg-config', required: true)
 tomlpp_dep = dependency('tomlplusplus', method: 'pkg-config', required: true)
+libgit2_dep = dependency('libgit2', method: 'pkg-config', required: true)
 
 src_files = files(
   'src/context.cpp',
   'src/main.cpp',
+  'src/modules/install.cpp',
   'src/modules/list.cpp',
   'src/modules/new_config.cpp',
   'src/modules/remove.cpp',
@@ -32,6 +34,6 @@ add_project_arguments(
 executable(
   'dotplug',
   src_files,
-  dependencies: [cli11_dep, tomlpp_dep],
+  dependencies: [cli11_dep, tomlpp_dep, libgit2_dep],
   include_directories: include_dir,
 )
