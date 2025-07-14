@@ -1,6 +1,7 @@
 #include "new_config.hpp"
 #include "validator.hpp"
 #include "settings.hpp"
+#include "symlinks.hpp"
 #include "install.hpp"
 #include "context.hpp"
 #include "remove.hpp"
@@ -43,9 +44,11 @@ int main(int argc, char** argv) {
   auto remove_cmd = app.add_subcommand("remove", "Remove a dotfile configuration.");
   remove_cmd->add_option("name", value, "The name of the dotfile configuration you want to remove.")->required();
 
-  auto new_cmd = app.add_subcommand("new", "Creates a new dotfile configuration.");
-  new_cmd->add_option("name", value, "The name of the dotfile configuration you want to create.")->required();
+  auto new_cmd = app.add_subcommand("init", "Initializes a new dotfile configuration.");
+  new_cmd->add_option("name", value, "The name of the dotfile configuration you want to initialize.")->required();
   new_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")->expected(-1)->required();
+
+  // auto disable_cmd = app.add_subcommand("disable", "Disables your current configuration.");
 
   add_force_flag(remove_cmd);
 
