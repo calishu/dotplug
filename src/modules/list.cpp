@@ -18,6 +18,8 @@ void list() {
     if (error_code == 1) return;
 
     print_config(config);
+    
+    return;
   }
 
   size_t i = 1;
