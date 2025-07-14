@@ -48,6 +48,12 @@ int main(int argc, char** argv) {
   init_cmd->add_option("name", value, "The name of the dotfile configuration you want to initialize.")->required();
   init_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")->expected(-1)->required();
 
+  auto show_cmd = app.add_subcommand("show", "Shows a specific configuration.");
+  show_cmd->add_option("name", value, "The name of the config you want to show.")->required();
+
+  auto config_cmd = app.add_subcommand("config", "Show/Edit your configuration.");
+  config_cmd->add_option("name", value, "The name of the configuration you want to show or edit.")->required();
+
   // auto disable_cmd = app.add_subcommand("disable", "Disables your current configuration.");
 
   add_force_flag(remove_cmd);
@@ -80,6 +86,11 @@ int main(int argc, char** argv) {
   else if (init_cmd->parsed()) new_config(dependencies);
   else if (remove_cmd->parsed()) remove_config();
   else if (install_cmd->parsed()) install();
+  else if (show_cmd->parsed()) list();
+  else if (config_cmd->parsed()) {
+    // planning on adding more features to `config_cmd` tommorow with subcommands, but I'm using list() as fallback.
+    list();
+  }
 
   return 0;
 }
