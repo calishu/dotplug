@@ -44,9 +44,9 @@ int main(int argc, char** argv) {
   auto remove_cmd = app.add_subcommand("remove", "Remove a dotfile configuration.");
   remove_cmd->add_option("name", value, "The name of the dotfile configuration you want to remove.")->required();
 
-  auto new_cmd = app.add_subcommand("init", "Initializes a new dotfile configuration.");
-  new_cmd->add_option("name", value, "The name of the dotfile configuration you want to initialize.")->required();
-  new_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")->expected(-1)->required();
+  auto init_cmd = app.add_subcommand("init", "Initializes a new dotfile configuration.");
+  init_cmd->add_option("name", value, "The name of the dotfile configuration you want to initialize.")->required();
+  init_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")->expected(-1)->required();
 
   // auto disable_cmd = app.add_subcommand("disable", "Disables your current configuration.");
 
@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
     ValidationResult validation_result = validator(parsed.first);
     print_validation(validation_result);
   }
-  else if (new_cmd->parsed()) new_config(dependencies);
+  else if (init_cmd->parsed()) new_config(dependencies);
   else if (remove_cmd->parsed()) remove_config();
   else if (install_cmd->parsed()) install();
 
