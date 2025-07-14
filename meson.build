@@ -22,12 +22,15 @@ src_files = files(
   'src/modules/remove.cpp',
   'src/modules/validator.cpp',
   'src/utils/config.cpp',
+  'src/utils/format_check.cpp',
+  'src/utils/symlinks.cpp',
 )
 include_dir = include_directories('src/headers')
 
 add_project_arguments(
   '-DDOTFILES_PATH="/Dokumente/Projekte/dotplug/test_config/"',
   '-DDESTINATION_PATH="/Dokumente/Projekte/dotplug/target/"',
+  '-DCONFIG_PATH="/Dokumente/Projekte/dotplug/"',
   language: 'cpp',
 )
 
