@@ -1,6 +1,6 @@
 #include "toml++/toml.hpp"
-#include "context.hpp"
 #include "settings.hpp"
+#include "context.hpp"
 #include <filesystem>
 #include <iostream>
 #include <string>
@@ -38,4 +38,31 @@ std::pair<std::string, int> dep_source(const toml::table& config, const std::str
   if (std::filesystem::exists(source) && std::filesystem::is_directory(source))
     return { std::filesystem::absolute(source), 0 };
   return { "", 1 };
+}
+
+void print_config(toml::table& config, const std::string prefix) {
+  std::string_view name = config["dotplug"]["name"].value_or(std::string_view("Unknown Name"));
+  std::string_view description = config["dotplug"]["description"].value_or(std::string_view(""));
+  std::string_view author = config["dotplug"]["author"].value_or(std::string_view(""));
+  auto dependencies = config["dotplug"]["dependencies"];
+
+  std::cout << (!prefix.empty() ? "[" + prefix + "] " : "") << name << ":" << std::endl;
+  if (!description.empty()) std::cout << "        Description: " << description << std::endl;
+  if (!author.empty()) std::cout << "        Author: " << author << std::endl;
+  
+  if (toml::array* arr = dependencies.as_array()) {
+    if (!arr->empty()) {
+      std::cout << "        Dependencies: ";
+      
+      for (size_t y = 0; y < arr->size(); ++y) {
+        const auto& el = (*arr)[y];
+
+        if (el.is_string()) {
+          std::cout << *el.value<std::string>();
+          if (y != arr->size() - 1) std::cout << ", ";
+        }
+      }
+      std::cout << std::endl;
+    }
+  }
 }

@@ -5,3 +5,4 @@
 
 std::pair<toml::table, int> parse_config(const std::string& name);
 std::pair<std::string, int> dep_source(const toml::table& config, const std::string& dep_name);
+void print_config(toml::table& config, const std::string prefix = "");
