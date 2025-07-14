@@ -8,8 +8,14 @@
 std::pair<toml::table, int> parse_config(const std::string& name) { 
   toml::table config;
 
+  std::string path = dotfiles_path + name + "/config.toml";
+  if (!std::filesystem::exists(path)) {
+    std::cerr << "The config doesn't have a valid config.toml!" << std::endl;
+    return {toml::table{}, 1};
+  }
+
   try {
-    config = toml::parse_file(dotfiles_path + name + "/config.toml");
+    config = toml::parse_file(path);
   } catch (const toml::parse_error& err) {
     std::cerr << "Parsing failed: \n" << err << std::endl;
     return {toml::table{}, 1};
