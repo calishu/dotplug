@@ -32,27 +32,22 @@ int main(int argc, char** argv) {
   
   auto list_cmd = app.add_subcommand("list", "Shows a list of all installed configurations.");
 
-  auto validate_cmd = app.add_subcommand("validate", "Check if the configuration config is valid.");
-  validate_cmd->add_option("name", value, "The name of the dotfile configuration you want to check.")->required();
-
   auto install_cmd = app.add_subcommand("install", "Install a dotfile configuration from remote repository.");
   install_cmd->add_option("url", value, "The Git URL of the remote repository.")->required();
-
-  auto apply_cmd = app.add_subcommand("apply", "Apply a dotfile configuration.");
-  apply_cmd->add_option("name", value, "The name of the dotfile configuration you want to apply.")->required();
-
-  auto remove_cmd = app.add_subcommand("remove", "Remove a dotfile configuration.");
-  remove_cmd->add_option("name", value, "The name of the dotfile configuration you want to remove.")->required();
 
   auto init_cmd = app.add_subcommand("init", "Initializes a new dotfile configuration.");
   init_cmd->add_option("name", value, "The name of the dotfile configuration you want to initialize.")->required();
   init_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")->expected(-1)->required();
 
-  auto show_cmd = app.add_subcommand("show", "Shows a specific configuration.");
-  show_cmd->add_option("name", value, "The name of the config you want to show.")->required();
 
   auto config_cmd = app.add_subcommand("config", "Show/Edit your configuration.");
   config_cmd->add_option("name", value, "The name of the configuration you want to show or edit.")->required();
+
+  auto validate_cmd = config_cmd->add_subcommand("validate", "Check if the configuration config is valid.");
+  auto remove_cmd = config_cmd->add_subcommand("remove", "Remove a dotfile configuration.");
+  auto apply_cmd = config_cmd->add_subcommand("apply", "Apply a dotfile configuration.");
+  auto show_cmd = config_cmd->add_subcommand("show", "Shows a specific configuration.");
+
 
   // auto disable_cmd = app.add_subcommand("disable", "Disables your current configuration.");
 
@@ -75,21 +70,22 @@ int main(int argc, char** argv) {
   
   // actions
   if (list_cmd->parsed()) list();
-  else if (validate_cmd->parsed()) {
-    auto parsed = parse_config(value);
-    if (parsed.second == 1) {
-      return 1;
-    }
-    ValidationResult validation_result = validator(parsed.first);
-    print_validation(validation_result);
-  }
   else if (init_cmd->parsed()) new_config(dependencies);
-  else if (remove_cmd->parsed()) remove_config();
   else if (install_cmd->parsed()) install();
-  else if (show_cmd->parsed()) list();
+ 
   else if (config_cmd->parsed()) {
-    // planning on adding more features to `config_cmd` tommorow with subcommands, but I'm using list() as fallback.
-    list();
+    if (validate_cmd->parsed()) {
+      auto parsed = parse_config(value);
+      if (parsed.second == 1) {
+        return 1;
+      }
+      ValidationResult validation_result = validator(parsed.first);
+      print_validation(validation_result);
+    }
+    else if (remove_cmd->parsed()) remove_config();
+    else if (show_cmd->parsed()) list();
+    else if (apply_cmd->parsed()) std::cout << "This is just a placeholder owo" << std::endl;
+    else list();
   }
 
   return 0;
