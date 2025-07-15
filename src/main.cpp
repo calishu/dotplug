@@ -40,8 +40,8 @@ int main(int argc, char** argv) {
   init_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")->expected(-1)->required();
 
 
-  auto config_cmd = app.add_subcommand("config", "Show/Edit your configuration.");
-  config_cmd->add_option("name", value, "The name of the configuration you want to show or edit.")->required();
+  auto config_cmd = app.add_subcommand("config", "Do stuff with your configuration.");
+  config_cmd->add_option("name", value, "The name of the configuration.")->required();
 
   auto validate_cmd = config_cmd->add_subcommand("validate", "Check if the configuration config is valid.");
   auto remove_cmd = config_cmd->add_subcommand("remove", "Remove a dotfile configuration.");
