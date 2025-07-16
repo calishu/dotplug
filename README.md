@@ -7,10 +7,10 @@ DotPlug is a user-friendly dotfile manager designed to help you organize and man
 
 ## Table of Content
 - [Installation](#installation)
-⠀ - [Build from Source](#build-from-source)
+- ⠀[Build from Source](#build-from-source)
 - [Getting Started](#getting-started)
-⠀ - ⠀[Base Commands](#base-commands)
-⠀ - ⠀[Config Commands](#config-commands)
+- ⠀[Base Commands](#base-commands)
+- ⠀[Config Commands](#config-commands)
 - [For Contributors](#for-contributors)
 - [License](#license)
 
