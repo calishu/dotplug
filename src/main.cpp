@@ -63,11 +63,10 @@ int main(int argc, char** argv) {
 
     if(proceed == "N" || proceed == "n" || proceed.empty()) return 0;
   }
+  ctx->forced = forced;
 
   if (!value.empty())
     ctx->name = value;
-  if (forced)
-    ctx->forced = forced;
   
   // actions
   if (list_cmd->parsed()) list();
