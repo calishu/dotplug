@@ -44,6 +44,7 @@ int main(int argc, char** argv) {
   config_cmd->add_option("name", value, "The name of the configuration.")->required();
 
   auto validate_cmd = config_cmd->add_subcommand("validate", "Check if the configuration config is valid.");
+  auto disable_cmd = config_cmd->add_subcommand("disable", "Disable the current configuration.");
   auto remove_cmd = config_cmd->add_subcommand("remove", "Remove a dotfile configuration.");
   auto apply_cmd = config_cmd->add_subcommand("apply", "Apply a dotfile configuration.");
   auto show_cmd = config_cmd->add_subcommand("show", "Shows a specific configuration.");
@@ -85,6 +86,7 @@ int main(int argc, char** argv) {
     else if (remove_cmd->parsed()) remove_config();
     else if (show_cmd->parsed()) list();
     else if (apply_cmd->parsed()) std::cout << "This is just a placeholder owo" << std::endl;
+    else if (disable_cmd->parsed()) remove_all_symlinks();
     else list();
   }
 
