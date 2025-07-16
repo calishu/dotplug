@@ -73,6 +73,7 @@ int remove_all_symlinks() {
       }
     }
   }
+  std::filesystem::remove(config_path + "current");
 
   return 0;
 }
