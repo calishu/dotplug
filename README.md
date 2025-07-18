@@ -36,8 +36,8 @@ If you want to reconfigure the meson build using the `--reconfigure` flag, the m
 | `dotplug config`  | Takes actions with a existing configuration. |
 
 #### Config Commands
-The `dotplug config` command takes the name parameter, followed by a sub command.
-| Sub Command | Action |
+The `dotplug config` command takes the name parameter, followed by a subcommand.
+| Sub-Command | Action |
 | ---         | ---    |
 | `validate`  | Validates the `config.toml` by the configuration. |
 | `remove`    | Deletes the configuration from the drive. |
