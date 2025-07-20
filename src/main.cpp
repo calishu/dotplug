@@ -29,6 +29,10 @@ int main(int argc, char** argv) {
   auto add_force_flag = [&](CLI::App* cmd) {
     cmd->add_flag("-f,--force", forced, "Force the action and ignore warnings (CAUTION!)");
   };
+
+  // auto add_flag = [&](CLI::App* cmd, const std::string& name, const std::string& description) { 
+  //   cmd->add_flag(name, description);
+  // };
   
   auto list_cmd = app.add_subcommand("list", "Shows a list of all installed configurations.");
 
@@ -53,6 +57,7 @@ int main(int argc, char** argv) {
   // auto disable_cmd = app.add_subcommand("disable", "Disables your current configuration.");
 
   add_force_flag(remove_cmd);
+  // add_flag(remove_cmd, "-f,--force", forced, "Force the action and ignore warnings (CAUTION!)");
 
   CLI11_PARSE(app, argc, argv);
 
@@ -75,11 +80,8 @@ int main(int argc, char** argv) {
  
   else if (config_cmd->parsed()) {
     if (validate_cmd->parsed()) {
-      auto parsed = parse_config(value);
-      if (parsed.second == 1) {
-        return 1;
-      }
-      ValidationResult validation_result = validator(parsed.first);
+      Config config_ = Config(value);
+      ValidationResult validation_result = validator(config_.name_);
       print_validation(validation_result);
     }
     else if (remove_cmd->parsed()) remove_config();

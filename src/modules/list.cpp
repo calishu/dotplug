@@ -14,20 +14,18 @@ void list() {
   int error_code;
 
   if (!ctx->name.empty()) {
-    std::pair<toml::table&, int&>(config, error_code) = parse_config(ctx->name);
-    if (error_code == 1) return;
+    Config config_ = Config(ctx->name);
 
-    print_config(config);
+    print_config(config_);
     
     return;
   }
 
   size_t i = 1;
   for (const auto & entry : std::filesystem::directory_iterator(std::filesystem::path(dotfiles_path))) {
-    std::pair<toml::table&, int&>(config, error_code) = parse_config(entry.path().filename().string());
-    if (error_code == 1) return;
+    Config config_ = Config(entry.path().filename().string());
 
-    print_config(config, std::to_string(i));
+    print_config(config_, std::to_string(i));
     
     ++i;
   }
