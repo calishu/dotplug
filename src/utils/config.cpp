@@ -9,11 +9,8 @@
 
 class Config {
 private:
-  std::string name_;
-  toml::table config_;
-
-  void parse_config(std::string name) {
-    std::string path = dotfiles_path + name + "/config.toml";
+  void parse_config() {
+    std::string path = dotfiles_path + name_ + "/config.toml";
 
     if(!std::filesystem::exists(path)) {
       std::cerr << "The config doesn't have a config.toml" << std::endl;
@@ -30,6 +27,9 @@ private:
   }
 
 public:
+  toml::table config_;
+  std::string name_;
+
   Config(const std::string& name) : name_(name) {
     parse_config(name_);
   }
@@ -83,3 +83,20 @@ public:
     return output;
   }
 };
+
+void print_config(Config& config, const std::string prefix = "") {
+  std::string_view name = config.config_["dotplug"]["name"].value_or(std::string_view("Unknown Name"));
+  std::string_view description = config.config_["dotplug"]["description"].value_or(std::string_view(""));
+  std::string_view author = config.config_["dotplug"]["author"].value_or(std::string_view(""));
+  std::vector<std::string> dependencies = config.get_dependencies();
+
+  std::cout << (!prefix.empty() ? "[" + prefix + "] " : "") << name << ":" << "\n";
+  if (!description.empty()) std::cout << "        Description: " << description << "\n";
+  if (!author.empty()) std::cout << "        Author: " << author << "\n";
+
+  std::cout << "        Dependencies: ";
+  for (const std::string& i : dependencies) {
+    std::cout << i << ", ";
+  }
+  std::cout << "\n";
+}
