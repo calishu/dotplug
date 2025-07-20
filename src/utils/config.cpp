@@ -95,7 +95,7 @@ void print_config(Config& config, const std::string prefix = "") {
   if (!author.empty()) std::cout << "        Author: " << author << "\n";
 
   std::cout << "        Dependencies: ";
-  for (const std::string& i : dependencies) {
+  for (std::string& i : dependencies) {
     std::cout << i << ", ";
   }
   std::cout << "\n";
