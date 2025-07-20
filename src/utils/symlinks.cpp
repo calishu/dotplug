@@ -2,12 +2,14 @@
 #include "context.hpp"
 #include "settings.hpp"
 #include "toml++/toml.hpp"
+#include <unordered_map>
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <string>
 
-/* @brief Removes every symlink from the active config!
+/* @brief Removes every active symlink from the config!
  *
  * The `current` file in the base config path, contains the name of the active config.
  *
@@ -24,56 +26,33 @@ int remove_all_symlinks() {
     return 1;
   }
 
-  auto [active_config, parse_err] = parse_config(active_config_name);
-  if (parse_err != 0) {
-    std::cerr << "Something failed :(" << std::endl;
-    return 1;
-  }
+  const Config active_config = Config(active_config_name);
+  const std::vector<std::string> dependencies = active_config.get_dependencies();
 
-  auto dependencies = active_config["dotplug"]["dependencies"];
+  for (std::string dep_name : dependencies) {
+    std::unordered_map<std::string, std::string> dep = active_config.get_dependency(dep_name);
 
-  if (toml::array* arr = dependencies.as_array()) {
-    if (arr->empty()) return 1;
+    if(!std::filesystem::exists(dep["destination"])) {
+      std::cout << "[ERROR] Couldn't find the destination." << std::endl;
+      return 1;
+    }
 
-    for (size_t i = 0; i < arr->size(); ++i) {
-      std::string dep_name = (*arr)[i].value_or("");
-      if (dep_name.empty()) {
-        std::cout << dep_name << "\n";
-        std::cerr << "[ERROR] Dependency name is empty!" << std::endl;
-        continue;
-      }
+    if (!std::filesystem::is_symlink(dep["destination"]) && ctx->forced == false) {
+      std::cout << "[WARNING] " << dep["destination"] << "isn't a symlink! Want to delete it? (y/N)";
+      std::string choice;
+      std::getline(std::cin, choice);
 
-      const auto& dep_table_node = active_config["dotplug"][dep_name];
+      if (choice == "n" || choice == "N" || choice == "") continue;
+    }
 
-      if (auto* dep_table = dep_table_node.as_table()) {
-        std::string destination = destination_path + (*dep_table)["destination"].value_or("");
-        if (destination.empty()) {
-          std::cout << destination << "\n";
-          std::cerr << "[ERROR] Destination of " << dep_table_node << " is empty!" << std::endl;
-          continue;
-        }
-
-        if (!std::filesystem::exists(destination)) {
-          std::cerr << "[ERROR] Couldn't find " << destination << std::endl;
-          continue;
-        }
-        if (!std::filesystem::is_symlink(destination)) {
-          std::cout << "[WARNING] " << destination << "isn't a symlink! Want to delete it? (y/N)";
-          std::string choice;
-          std::getline(std::cin, choice);
-
-          if (choice == "n" || choice == "N" || choice == "") continue;
-        }
-
-        std::error_code err;
-        bool removed = std::filesystem::remove(destination, err);
-        if (!removed || err) {
-          std::cout << "Oh no, there was an error :<\n" << err.message() << std::endl;
-        }
-      }
+    std::error_code err;
+    bool removed = std::filesystem::remove(dep["destination"], err);
+    if (!removed || err) {
+      std::cout << "Oh no, there was an error :<\n" << err.message() << std::endl;
+      return 1;
     }
   }
-  std::filesystem::remove(config_path + "current");
 
+  std::filesystem::remove(config_path + "current");
   return 0;
 }
