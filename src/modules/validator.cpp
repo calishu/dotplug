@@ -1,6 +1,9 @@
 #include "toml++/toml.hpp"
 #include "config.hpp"
+#include <unordered_map>
+#include <filesystem>
 #include <iostream>
+#include <vector>
 #include <format>
 #include <string>
 
@@ -30,37 +33,32 @@ void print_validation(ValidationResult& result) {
   return;
 }
 
-ValidationResult validator(const toml::table& file) {
+ValidationResult validator(const Config& config) {
   ValidationResult output;
 
-  auto dependencies = file["dotplug"]["dependencies"].as_array();
-  if (!dependencies || dependencies->empty()) {
-    output.add_error("You need at least one dependency");
+  const std::vector<std::string> dependencies = config.get_dependencies();
+
+  if (dependencies.empty()) {
+    std::cout << "You need at least a single dependency" << std::endl;
     return output;
   }
 
-  for (size_t i = 0; i < dependencies->size(); ++i) {
-    auto& dep_node = (*dependencies)[i];
-    auto dep_name_opt = dep_node.value<std::string>();
-    if (!dep_name_opt) {
-      output.add_error("Dependency is not a string");
-      continue;
+  for (const std::string& dep : dependencies) {
+    const std::unordered_map<std::string, std::string> dep_infos = config.get_dependency(dep);
+    
+    if (!config.config_.contains(dep) || !config.config_[dep].is_table()) {
+      output.add_error(dep + " doesn't exist or it isn't a table");
+      break;
     }
-    const std::string& dep_name = *dep_name_opt;
 
-    if (!file["dotplug"][dep_name] || dependencies->empty()) {
-      output.add_error(format("Dependency section '{}' is missing", dep_name));
-    } 
-
-    const auto& dep_entry = file["dotplug"][dep_name]["destination"];
-    if (!dep_entry)
-      output.add_error("You need to enter a destination for your dependency");
-
-    auto dep_source_result = dep_source(file, dep_name);
-    if (dep_source_result.second == 1) {
-      output.add_error(format("Couldn't find the source of '{}'", dep_name));
+    if (dep_infos.count("destination") && (dep_infos.at("destination").empty() || !std::filesystem::exists(dep_infos.at("destination")))) {
+      output.add_error("You need to add destination for " + dep);
+    }
+    
+    if (dep_infos.count("source") && (dep_infos.at("source").empty() || !std::filesystem::exists(dep_infos.at("source")))) {
+      output.add_error("Couldn't find source of " + dep);
     }
   }
 
-  return output; 
+  return output;
 }

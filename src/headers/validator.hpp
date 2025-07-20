@@ -1,6 +1,7 @@
 #pragma once
 
 #include "toml++/toml.hpp"
+#include "config.hpp"
 #include <string>
 #include <vector>
 
@@ -35,4 +36,4 @@ struct ValidationResult {
 };
 
 void print_validation(ValidationResult& result);
-ValidationResult validator(const toml::table& file);
+ValidationResult validator(const Config& config);
