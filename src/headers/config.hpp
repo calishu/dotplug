@@ -18,4 +18,4 @@ public:
   std::unordered_map<std::string, std::string> get_dependency(const std::string& dep_name) const; // get data from a specific dependency
 };
 
-void print_config(Config& config, const std::string prefix = "");
+void print_config(const Config& config, const std::string prefix = "");
