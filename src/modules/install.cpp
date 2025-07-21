@@ -51,8 +51,8 @@ int install() {
   std::getline(std::cin, validate_choice);
   if (validate_choice.empty() || validate_choice == "n" || validate_choice == "N") return 0;
   
-  std::pair<toml::table, int> config = parse_config(name);
-  ValidationResult validation_result = validator(config.first);
+  const Config config = Config(name);
+  ValidationResult validation_result = validator(config);
 
   if (validation_result.has_errors())
     print_validation(validation_result);
