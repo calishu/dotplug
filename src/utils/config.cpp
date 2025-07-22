@@ -18,14 +18,13 @@ void Config::parse_config() {
   std::string path = dotfiles_path + name_ + "/config.toml";
 
   if(!std::filesystem::exists(path)) {
-    std::cerr << "The config doesn't have a config.toml" << std::endl;
-    return;
+    throw std::runtime_error("The config doesn't have a config.toml");
   }
 
   try {
     config_ = toml::parse_file(path);
   } catch (const toml::parse_error& err) {
-    std::cerr << "Parsing failed: \n" << err << std::endl;
+    throw std::runtime_error("Parsing failed: \n" + std::string(err.description()));
   }
   
   return;
@@ -55,8 +54,7 @@ std::unordered_map<std::string, std::string> Config::get_dependency(const std::s
   std::unordered_map<std::string, std::string> output;
 
   if (!config_.contains(dep_name) || !config_[dep_name].is_table()) {
-    output["error"] = (dep_name + " doesn't exist or isn't a table!");
-    return output;
+    throw std::runtime_error(dep_name + " doesn't exist or isn't a table");
   }
 
   auto source_node = config_["dotplug"][dep_name]["source"];
