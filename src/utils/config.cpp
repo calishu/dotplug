@@ -60,8 +60,12 @@ std::unordered_map<std::string, std::string> Config::get_dependency(const std::s
   auto source_node = config_["dotplug"][dep_name]["source"];
   auto destination_node = config_["dotplug"][dep_name]["destination"];
 
-  std::string source_path = source_node.is_string() ? source_node.value_or("") : "";
-  std::string dest_path = destination_node.is_string() ? destination_node.value_or("") : "";
+  std::string source_path = (source_node || source_node.is_string()) 
+    ? source_node.value_or("") 
+    : dep_name;
+  std::string dest_path = (destination_node || destination_node.is_string())
+    ? destination_node.value_or("") 
+    : dep_name;
 
   std::string source = source_path.empty()
     ? dotfiles_path + name_ + "/" + dep_name
