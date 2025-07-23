@@ -11,7 +11,6 @@
 
 void list() {
   toml::table config;
-  int error_code;
 
   if (!ctx->name.empty()) {
     Config config_ = Config(ctx->name);
