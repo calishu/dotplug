@@ -29,8 +29,10 @@ int install() {
   std::string name = std::string(name_view);
 
   git_libgit2_init();
-  if (git_error_last()->message != "no error") {
-    std::cerr << "Something failed during the git initialization.\n" << git_error_last()->message << std::endl;
+
+  const git_error* err = git_error_last();
+  if (err && std::string(err->message) != "no error") {
+    std::cerr << "Something failed during the git initialization.\n" << err->message << std::endl;
     return 1;
   }
   
@@ -43,6 +45,7 @@ int install() {
     return 1;
   }
 
+  git_repository_free(repo_ptr);
   git_libgit2_shutdown();
 
   std::cout << "Downloaded the config! Wanna validate it? (Y/n) ";
