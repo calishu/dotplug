@@ -25,7 +25,7 @@ src_files = files(
   'src/utils/format_check.cpp',
   'src/utils/symlinks.cpp',
 )
-include_dir = include_directories('src/headers')
+include_dir = include_directories('include/')
 
 add_project_arguments(
   '-DDOTFILES_PATH="/Dokumente/Projekte/dotplug/test_config/"',
