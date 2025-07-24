@@ -27,12 +27,21 @@ src_files = files(
 )
 include_dir = include_directories('include/', 'include/modules/', 'include/utils/')
 
-add_project_arguments(
-  '-DDOTFILES_PATH="/Dokumente/Projekte/dotplug/test_config/"',
-  '-DDESTINATION_PATH="/Dokumente/Projekte/dotplug/target/"',
-  '-DCONFIG_PATH="/Dokumente/Projekte/dotplug/"',
-  language: 'cpp',
-)
+if get_option('RELEASE')
+  add_project_arguments(
+    '-DDOTFILES_PATH="/.local/share/dotplug/dotfiles"/',
+    '-DDESTINATION_PATH="/.config/"',
+    '-DCONFIG_PATH="/.config/dotplug/"',
+    language: 'cpp',
+  )
+else
+  add_project_arguments(
+    '-DDOTFILES_PATH="/.local/share/dotplug-dev/dotfiles/"',
+    '-DDESTINATION_PATH="/.cache/dotplug/"',
+    '-DCONFIG_PATH="/.local/share/dotplug-dev/"',
+    language: 'cpp',
+  )
+endif
 
 executable(
   'dotplug',

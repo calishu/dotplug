@@ -1,0 +1,6 @@
+option(
+  'RELEASE',
+  type: 'boolean',
+  value: false,
+  description: 'Do you want to create the release build?',
+)
