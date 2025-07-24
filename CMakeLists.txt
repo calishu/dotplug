@@ -43,15 +43,15 @@ include_directories(include)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	add_compile_definitions(
-		CONFIG_PATH="/.config"
-		DOTFILES_PATH="/.local/share/dotplug/dotfiles"
-		DESTINATION_PATH="/.cache/dotplug"
+		CONFIG_PATH="/.config/dotplug/"
+		DOTFILES_PATH="/.local/share/dotplug/dotfiles/"
+		DESTINATION_PATH="/.config/"
 	)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	add_compile_definitions(
-		CONFIG_PATH="/.local/share/dotplug-dev/config"
-		DOTFILES_PATH="/.local/share/dotplug-dev/dotfiles"
-		DESTINATION_PATH="/.cache/dotplug-dev"
+		CONFIG_PATH="/.local/share/dotplug-dev/"
+		DOTFILES_PATH="/.local/share/dotplug-dev/dotfiles/"
+		DESTINATION_PATH="/.cache/dotplug-dev/"
 	)
 endif()
 
