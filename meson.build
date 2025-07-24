@@ -1,4 +1,4 @@
-project('dotplug', 'cpp', default_options: ['cpp_std=c++20'])
+project('dotplug', 'cpp', default_options: ['cpp_std=c++23'])
 
 run_command(
   'conan',
@@ -37,7 +37,7 @@ if get_option('RELEASE')
 else
   add_project_arguments(
     '-DDOTFILES_PATH="/.local/share/dotplug-dev/dotfiles/"',
-    '-DDESTINATION_PATH="/.cache/dotplug/"',
+    '-DDESTINATION_PATH="/.cache/dotplug-dev/"',
     '-DCONFIG_PATH="/.local/share/dotplug-dev/"',
     language: 'cpp',
   )
