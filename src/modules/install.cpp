@@ -30,7 +30,7 @@ int install() {
 
   git_libgit2_init();
   if (git_error_last()->message != "no error") {
-    std::cout << "Something failed during the git initialization.\n" << git_error_last()->message << std::endl;
+    std::cerr << "Something failed during the git initialization.\n" << git_error_last()->message << std::endl;
     return 1;
   }
   
@@ -39,7 +39,7 @@ int install() {
   const int clone_return = git_clone(&repo_ptr, ctx->name.c_str(), clone_path.c_str(), NULL);
 
   if (clone_return != 0) {
-    std::cout << "Something wen't wrong during the cloning process.\n" << git_error_last()->message << std::endl;
+    std::cerr << "Something wen't wrong during the cloning process.\n" << git_error_last()->message << std::endl;
     return 1;
   }
 
