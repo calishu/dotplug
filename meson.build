@@ -25,7 +25,7 @@ src_files = files(
   'src/utils/format_check.cpp',
   'src/utils/symlinks.cpp',
 )
-include_dir = include_directories('include/', 'include/modules/', 'include/utils/')
+include_dir = include_directories('include/')
 
 if get_option('RELEASE')
   add_project_arguments(
