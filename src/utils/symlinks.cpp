@@ -20,7 +20,7 @@ namespace fs = std::filesystem;
 int remove_all_symlinks() {
     std::string active_config_name;
 
-    std::ifstream current{config_path + "current"};
+    std::ifstream current{state_path + "current_configuration"};
     if (current.good()) {
         std::getline(current, active_config_name);
     } else {
@@ -52,6 +52,6 @@ int remove_all_symlinks() {
         fs::remove(dst);
     }
 
-    fs::remove(config_path + "current");
+    fs::remove(state_path + "current_configuration");
     return 0;
 }

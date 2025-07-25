@@ -32,6 +32,7 @@ if get_option('RELEASE')
     '-DDOTFILES_PATH="/.local/share/dotplug/dotfiles"/',
     '-DDESTINATION_PATH="/.config/"',
     '-DCONFIG_PATH="/.config/dotplug/"',
+    '-DSTATE_PATH="/.local/state/dotplug/"',
     language: 'cpp',
   )
 else
@@ -39,6 +40,7 @@ else
     '-DDOTFILES_PATH="/.local/share/dotplug-dev/dotfiles/"',
     '-DDESTINATION_PATH="/.cache/dotplug-dev/"',
     '-DCONFIG_PATH="/.local/share/dotplug-dev/"',
+    '-DSTATE_PATH="/.local/share/dotplug-dev/"',
     language: 'cpp',
   )
 endif

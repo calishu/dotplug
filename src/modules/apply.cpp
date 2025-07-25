@@ -12,7 +12,7 @@
 namespace fs = std::filesystem;
 
 int apply() {
-    if (fs::exists(config_path + "current"))
+    if (fs::exists(state_path + "current_configuration"))
         remove_all_symlinks();
 
     const Config config{ctx->name};
@@ -34,6 +34,6 @@ int apply() {
         fs::create_directory_symlink(src, dst);
     }
 
-    std::ofstream{config_path + "current"} << (dotfiles_path + config.name() + "/config.toml");
+    std::ofstream{state_path + "current_configuration"} << (dotfiles_path + config.name() + "/config.toml");
     return 0;
 }
