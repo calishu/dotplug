@@ -9,7 +9,6 @@ BinPackParameters: false
 BinPackArguments: false
 
 # Indentation
-UseTab: Always
 IndentWidth: 4
 ContinuationIndentWidth: 4
 TabWidth: 4
@@ -39,7 +38,7 @@ AlignAfterOpenBracket: AlwaysBreak
 AlignEscapedNewlines: Left
 
 # Break
-BreakBeforeBraces: Allman
+BreakBeforeBraces: Attach
 BreakBeforeTernaryOperators: true
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: true

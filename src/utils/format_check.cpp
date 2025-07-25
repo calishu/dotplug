@@ -9,8 +9,7 @@
  *
  * @return true if the string contains `://`, false if not.
  */
-bool is_valid_url()
-{
-	size_t pos = ctx->name.find("://");
-	return (pos != std::string::npos) && (pos < 10);
+bool is_valid_url() {
+    size_t pos = ctx->name.find("://");
+    return (pos != std::string::npos) && (pos < 10);
 }
