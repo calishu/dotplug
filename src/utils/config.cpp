@@ -69,8 +69,8 @@ std::unordered_map<std::string, std::string> Config::get_dependency(const std::s
     : dotfiles_path + name_ + "/" + source_path;
 
   std::string destination = dest_path.empty()
-    ? destination_path + name_ + "/" + dep_name
-    : destination_path + name_ + "/" + dest_path;
+    ? destination_path + dep_name
+    : destination_path + dest_path;
 
   output["source"] = source;
   output["destination"] = destination;
