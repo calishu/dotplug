@@ -1,7 +1,6 @@
 [requires]
 tomlplusplus/3.4.0
 cli11/2.5.0
-libgit2/1.8.4
 
 [generators]
 MesonToolchain

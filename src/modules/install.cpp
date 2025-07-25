@@ -1,8 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
-
-#include <git2.h>
+#include <sstream>
 
 #include "context.hpp"
 #include "modules/install.hpp"
@@ -26,25 +25,29 @@ int install() {
     if (name.size() >= 4 && name.compare(name.size() - 4, 4, ".git") == 0)
         name.erase(name.size() - 4);
 
-    git_libgit2_init();
+    const auto clone_path = dotfiles_path + name;
+    std::ostringstream ss;
 
-    const git_error *err = git_error_last();
-    if (err && std::string(err->message) != "no error") {
-        std::cerr << "Something failed during the git initialization.\n" << err->message << std::endl;
-        return 1;
+    // always quote strings in a popen call because popen uses the system shell
+    ss << "git clone '" << ctx->name << "' '" << clone_path << '\'';
+    
+    const auto git = popen(ss.str().c_str(), "r");
+    if (!git) {
+        throw std::runtime_error{std::string{"popen: "} + strerror(errno)};
     }
 
-    std::string clone_path = dotfiles_path + name;
-    git_repository *repo_ptr = nullptr;
-    const int clone_return = git_clone(&repo_ptr, ctx->name.c_str(), clone_path.c_str(), NULL);
-
-    if (clone_return != 0) {
-        std::cerr << "Something wen't wrong during the cloning process.\n" << git_error_last()->message << std::endl;
-        return 1;
+    // pclose() waits for the process to exit
+    // all we need is a success/failure, so we can check the exit status for that
+    const auto rc = pclose(git);
+    if (rc == -1) {
+        throw std::runtime_error{std::string{"pclose: "} + strerror(errno)};
     }
 
-    git_repository_free(repo_ptr);
-    git_libgit2_shutdown();
+    const auto status = WEXITSTATUS(rc);
+    std::cout << "git exited with status: " << status << '\n';
+    if (status) {
+        throw std::runtime_error{"git clone failed!"};
+    }
 
     std::cout << "Downloaded the config! Wanna validate it? (Y/n) ";
 
