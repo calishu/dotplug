@@ -3,8 +3,8 @@
 #include <string>
 
 struct Context {
-  std::string name;
-  bool forced;
+    std::string name;
+    bool forced;
 };
 
-extern Context* ctx;
+extern Context *ctx;
