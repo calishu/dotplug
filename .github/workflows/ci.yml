@@ -65,7 +65,7 @@ jobs:
           restore-keys: ${{ runner.os }}-conan-
 
       - name: Install dependencies with Conan
-        run: conan install . --output-folder=build --build=missin
+        run: conan install . --output-folder=build --build=missing
 
       - name: Configure Meson
         run: |
