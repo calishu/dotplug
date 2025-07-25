@@ -3,7 +3,7 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build:
+  cmake:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,6 +32,55 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dotplug
+          name: dotplug-cmake
           path: |
             build/dotplug
+
+  meson:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-pip \
+            python3-setuptools \
+            ninja-build 
+
+      - name: Install Conan and Meson
+        run: pip3 install --upgrade conan meson
+
+      - name: Configure Conan
+        run: conan profile detect --force
+
+      - name: Cache conan packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.conan2
+          key: ${{ runner.os }}-conan-${{ hashFiles('conanfile.*') }}
+          restore-keys: ${{ runner.os }}-conan-
+
+      - name: Install dependencies with Conan
+        run: conan install . --output-folder=build --build=missing
+
+      - name: Configure Meson
+        run: |
+          source build/conanbuild.sh
+          meson setup build --native-file=build/conan_meson_native.ini
+
+      - name: Build Project
+        run: |
+          source build/conanrun.sh
+          meson compile -C build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotplug-meson
+          path: |
+            build/dotplug
+
