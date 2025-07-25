@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <string>
 
-inline std::string config_path = std::string(std::getenv("HOME")) + CONFIG_PATH;
-inline std::string dotfiles_path = std::string(std::getenv("HOME")) + DOTFILES_PATH;
-inline std::string destination_path = std::string(std::getenv("HOME")) + DESTINATION_PATH;
+// clang-format off
+inline const auto home = std::string{getenv("HOME")},
+				  config_path = home + CONFIG_PATH,
+                  dotfiles_path = home + DOTFILES_PATH,
+                  destination_path = home + DESTINATION_PATH;

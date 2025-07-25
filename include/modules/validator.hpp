@@ -1,37 +1,29 @@
 #pragma once
 
-#include "utils/config.hpp"
-
 #include <string>
 #include <vector>
 
-struct ValidationResult {
-    enum class Type { Warning, Error };
+class ValidationResult {
+public:
+    struct LogEntry {
+        enum class Type { Warning, Error };
 
-    struct Entries {
         std::string message;
         Type type;
+
+        // explicit constructor needed for usage with std::vector::emplace_back
+        LogEntry(const std::string &msg, const Type t)
+            : message{msg},
+              type{t} {}
     };
 
-    std::vector<Entries> log;
+private:
+    std::vector<LogEntry> log;
 
-    inline bool has_errors() const {
-        for (const auto &e : log)
-            if (e.type == Type::Error)
-                return true;
-        return false;
-    }
-
-    inline bool has_warnings() const {
-        for (const auto &e : log)
-            if (e.type == Type::Warning)
-                return true;
-        return false;
-    }
-
-    void add_error(std::string msg);
-    void add_warning(std::string msg);
+public:
+    auto has_errors() const -> bool;
+    auto has_warnings() const -> bool;
+    auto add_error(const std::string &msg) -> void;
+    auto add_warning(const std::string &msg) -> void;
+    auto print() const -> void;
 };
-
-void print_validation(ValidationResult &result);
-ValidationResult validator(const Config &config);

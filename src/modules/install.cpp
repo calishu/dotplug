@@ -12,15 +12,15 @@
 
 int install() {
     if (!is_valid_url()) {
-        std::cout << "The provided value is not a URL!" << std::endl;
+        std::cerr << "The provided value is not a URL!\n";
         return 1;
     }
 
-    size_t last_slash = ctx->name.find_last_of("/");
+    const auto last_slash = ctx->name.find_last_of("/");
     if (last_slash == std::string::npos)
         return 1;
 
-    std::string name = ctx->name.substr(last_slash + 1);
+    auto name = ctx->name.substr(last_slash + 1);
 
     if (name.size() >= 4 && name.compare(name.size() - 4, 4, ".git") == 0)
         name.erase(name.size() - 4);
@@ -56,11 +56,11 @@ int install() {
     if (validate_choice.empty() || validate_choice == "n" || validate_choice == "N")
         return 0;
 
-    const Config config = Config(name);
-    ValidationResult validation_result = validator(config);
+    const Config config{name};
+    const auto validation_result = config.validate();
 
     if (validation_result.has_errors())
-        print_validation(validation_result);
+        validation_result.print();
 
     return 0;
 }

@@ -5,11 +5,13 @@
 #include "context.hpp"
 #include "settings.hpp"
 
-int remove_config() {
-    std::string path = dotfiles_path + ctx->name;
+namespace fs = std::filesystem;
 
-    if (!std::filesystem::exists(path)) {
-        std::cout << "The config doesn't exist." << std::endl;
+int remove_config() {
+    const auto path = dotfiles_path + ctx->name;
+
+    if (!fs::exists(path)) {
+        std::cout << "The config doesn't exist.\n";
         return 1;
     }
 
@@ -21,11 +23,6 @@ int remove_config() {
             return 0;
     }
 
-    std::error_code err;
-    if (!std::filesystem::remove_all(path, err)) {
-        std::cout << "Oopsies, a error happened :( \n" << err.message() << std::endl;
-        return 1;
-    }
-
+    fs::remove_all(path);
     return 0;
 }

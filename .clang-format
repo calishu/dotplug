@@ -36,6 +36,7 @@ AlignConsecutiveShortCaseStatements:
   AlignCaseColons: false
 AlignAfterOpenBracket: AlwaysBreak
 AlignEscapedNewlines: Left
+AlignConsecutiveAssignments: Consecutive
 
 # Break
 BreakBeforeBraces: Attach

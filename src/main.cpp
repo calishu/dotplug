@@ -15,8 +15,8 @@
 
 int main(int argc, char **argv) {
     if (!getuid()) {
-        std::cout << "Using `sudo` is prohibited." << std::endl;
-        return 1;
+        std::cerr << "Using `sudo` is prohibited.\n";
+        return EXIT_FAILURE;
     }
 
     CLI::App app{"Dotplug is a easy-to-use dotfile manager for linux."};
@@ -24,8 +24,8 @@ int main(int argc, char **argv) {
     app.require_subcommand();
 
     std::string value; // stuff like names or links.
-    std::vector<std::string> dependencies;
-    bool forced = false;
+    auto dependencies = std::vector<std::string>{};
+    bool forced       = false;
 
     auto add_force_flag = [&](CLI::App *cmd) {
         cmd->add_flag("-f,--force", forced, "Force the action and ignore warnings (CAUTION!)");
@@ -50,11 +50,11 @@ int main(int argc, char **argv) {
     auto config_cmd = app.add_subcommand("config", "Do stuff with your configuration.");
     config_cmd->add_option("name", value, "The name of the configuration.")->required();
 
-    auto validate_cmd = config_cmd->add_subcommand("validate", "Check if the configuration config is valid.");
-    auto disable_cmd = config_cmd->add_subcommand("disable", "Disable the current configuration.");
-    auto remove_cmd = config_cmd->add_subcommand("remove", "Remove a dotfile configuration.");
-    auto apply_cmd = config_cmd->add_subcommand("apply", "Apply a dotfile configuration.");
-    auto show_cmd = config_cmd->add_subcommand("show", "Shows a specific configuration.");
+    auto validate_cmd = config_cmd->add_subcommand("validate", "Check if the configuration config is valid."),
+         disable_cmd  = config_cmd->add_subcommand("disable", "Disable the current configuration."),
+         remove_cmd   = config_cmd->add_subcommand("remove", "Remove a dotfile configuration."),
+         apply_cmd    = config_cmd->add_subcommand("apply", "Apply a dotfile configuration."),
+         show_cmd     = config_cmd->add_subcommand("show", "Shows a specific configuration.");
 
     // auto disable_cmd = app.add_subcommand("disable", "Disables your current
     // configuration.");
@@ -79,30 +79,31 @@ int main(int argc, char **argv) {
     if (!value.empty())
         ctx->name = value;
 
-    // actions
-    if (list_cmd->parsed())
-        list();
-    else if (init_cmd->parsed())
-        new_config(dependencies);
-    else if (install_cmd->parsed())
-        install();
+    try {
+        // actions
+        if (list_cmd->parsed())
+            list();
+        else if (init_cmd->parsed())
+            new_config(dependencies);
+        else if (install_cmd->parsed())
+            install();
 
-    else if (config_cmd->parsed()) {
-        if (validate_cmd->parsed()) {
-            Config config_ = Config(value);
-            ValidationResult validation_result = validator(config_.name_);
-            print_validation(validation_result);
-        } else if (remove_cmd->parsed())
-            remove_config();
-        else if (show_cmd->parsed())
-            list();
-        else if (apply_cmd->parsed())
-            apply();
-        else if (disable_cmd->parsed())
-            remove_all_symlinks();
-        else
-            list();
+        else if (config_cmd->parsed()) {
+            if (validate_cmd->parsed())
+                Config{value}.validate().print();
+            else if (remove_cmd->parsed())
+                remove_config();
+            else if (show_cmd->parsed())
+                list();
+            else if (apply_cmd->parsed())
+                apply();
+            else if (disable_cmd->parsed())
+                remove_all_symlinks();
+            else
+                list();
+        }
+    } catch (const std::exception &e) {
+        std::cerr << argv[0] << ": " << e.what() << '\n';
+        return EXIT_FAILURE;
     }
-
-    return 0;
 }

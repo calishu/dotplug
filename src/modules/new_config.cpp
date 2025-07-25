@@ -11,39 +11,31 @@
 #include "context.hpp"
 #include "settings.hpp"
 
-int new_config(const std::vector<std::string> &deps) {
-    std::string path = dotfiles_path + ctx->name;
+namespace fs = std::filesystem;
 
-    if (std::filesystem::exists(path) && std::filesystem::is_directory(path)) {
+int new_config(const std::vector<std::string> &deps) {
+    const auto path = dotfiles_path + ctx->name;
+
+    if (fs::is_directory(path)) {
         std::cout << "The config folder already exists. Please try another one.\n";
         return 1;
     }
 
-    std::error_code ec;
-    std::filesystem::create_directory(path, ec);
-    if (ec) {
-        std::cerr << "Unexpected Error: " << ec.message() << "\n";
-        return 1;
-    }
+    fs::create_directory(path);
 
-    toml::table root;
-
-    toml::table dotplug;
-    const char *user = getenv("USER");
+    toml::table root, dotplug;
+    const auto user = getenv("USER");
 
     dotplug.insert("name", ctx->name);
     dotplug.insert("author", user ? user : "unknown");
 
     toml::array deps_array;
     for (const auto &dep : deps)
-        deps_array.push_back(dep);
+        deps_array.emplace_back(dep);
     dotplug.insert("dependencies", deps_array);
 
     root.insert("dotplug", std::move(dotplug));
 
-    std::ofstream ofs(path + "/config.toml");
-    ofs << root;
-    ofs.close();
-
+    std::ofstream{path + "/config.toml"} << root;
     return 0;
 }
