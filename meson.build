@@ -11,7 +11,6 @@ run_command(
 
 cli11_dep = dependency('CLI11', method: 'pkg-config', required: true)
 tomlpp_dep = dependency('tomlplusplus', method: 'pkg-config', required: true)
-libgit2_dep = dependency('libgit2', method: 'pkg-config', required: true)
 
 src_files = files(
   'src/context.cpp',
@@ -47,6 +46,6 @@ endif
 executable(
   'dotplug',
   src_files,
-  dependencies: [cli11_dep, tomlpp_dep, libgit2_dep],
+  dependencies: [cli11_dep, tomlpp_dep],
   include_directories: include_dir,
 )
