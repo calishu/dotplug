@@ -104,7 +104,7 @@ auto Config::validate() const -> ValidationResult {
     const auto dependencies = get_dependencies();
 
     if (dependencies.empty()) {
-        std::cout << "You need at least a single dependency" << std::endl;
+        std::cout << "You need at least a single dependency\n";
         return output;
     }
 

@@ -15,7 +15,7 @@
 
 int main(int argc, char **argv) {
     if (!getuid()) {
-        std::cout << "Using `sudo` is prohibited." << std::endl;
+        std::cout << "Using `sudo` is prohibited.\n";
         return 1;
     }
 
@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     app.require_subcommand();
 
     std::string value; // stuff like names or links.
-    std::vector<std::string> dependencies;
+    auto dependencies = std::vector<std::string>{};
     bool forced = false;
 
     auto add_force_flag = [&](CLI::App *cmd) {
@@ -89,8 +89,7 @@ int main(int argc, char **argv) {
 
     else if (config_cmd->parsed()) {
         if (validate_cmd->parsed()) {
-            const auto validation_result = Config{value}.validate();
-            validation_result.print();
+            Config{value}.validate().print();
         } else if (remove_cmd->parsed())
             remove_config();
         else if (show_cmd->parsed())

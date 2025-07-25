@@ -27,7 +27,7 @@ auto ValidationResult::add_warning(const std::string &msg) -> void {
 
 auto ValidationResult::print() const -> void {
     if (log.empty())
-        std::cout << "Everything is fine with the configuration." << std::endl;
+        std::cout << "Everything is fine with the configuration.\n";
     for (const auto &e : log)
         std::cout << (e.type == ValidationResult::Type::Error ? "[ERROR] " : "[WARNING] ") << e.message << "\n";
     return;
