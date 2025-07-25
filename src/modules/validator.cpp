@@ -16,8 +16,8 @@ struct ValidationResult {
 
     std::vector<Entries> log;
 
-    void add_error(std::string msg) { log.push_back({msg, Type::Error}); }
-    void add_warning(std::string msg) { log.push_back({msg, Type::Warning}); }
+    void add_error(const std::string &msg) { log.emplace_back(msg, Type::Error); }
+    void add_warning(const std::string &msg) { log.emplace_back(msg, Type::Warning); }
 };
 
 void print_validation(ValidationResult &result) {
@@ -31,7 +31,7 @@ void print_validation(ValidationResult &result) {
 ValidationResult validator(const Config &config) {
     ValidationResult output;
 
-    const std::vector<std::string> dependencies = config.get_dependencies();
+    const auto dependencies = config.get_dependencies();
 
     if (dependencies.empty()) {
         std::cout << "You need at least a single dependency" << std::endl;
@@ -39,12 +39,12 @@ ValidationResult validator(const Config &config) {
     }
 
     for (const std::string &dep : dependencies) {
-        if (!config.config_["dotplug"][dep].is_table()) {
+        if (!config.config()["dotplug"][dep].is_table()) {
             output.add_error(dep + " doesn't exist or it isn't a table");
             continue;
         }
 
-        const std::unordered_map<std::string, std::string> dep_infos = config.get_dependency(dep);
+        const auto dep_infos = config.get_dependency(dep);
 
         if (dep_infos.count("destination") && (dep_infos.at("destination").empty()))
             output.add_error("You need to add destination for " + dep);

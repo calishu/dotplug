@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
     else if (config_cmd->parsed()) {
         if (validate_cmd->parsed()) {
             Config config_ = Config(value);
-            ValidationResult validation_result = validator(config_.name_);
+            ValidationResult validation_result = validator(config_.name());
             print_validation(validation_result);
         } else if (remove_cmd->parsed())
             remove_config();
