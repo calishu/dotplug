@@ -1,6 +1,6 @@
-#include "context.hpp"
-#include <iostream>
 #include <string>
+
+#include "context.hpp"
 
 /* @brief Checks if the value contains `://`.
  *

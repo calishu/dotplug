@@ -1,13 +1,11 @@
-#include "list.hpp"
-#include "config.hpp"
-#include "context.hpp"
-#include "settings.hpp"
-#include "toml++/toml.hpp"
-#include <filesystem>
-#include <iostream>
 #include <cstdlib>
+#include <filesystem>
 #include <string>
-#include <format>
+
+#include "context.hpp"
+#include "modules/list.hpp"
+#include "settings.hpp"
+#include "utils/config.hpp"
 
 void list() {
   toml::table config;

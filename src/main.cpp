@@ -1,16 +1,16 @@
-#include "new_config.hpp"
-#include "validator.hpp"
-#include "settings.hpp"
-#include "symlinks.hpp"
-#include "install.hpp"
-#include "context.hpp"
-#include "remove.hpp"
-#include "config.hpp"
-#include "CLI/CLI.hpp"
-#include "list.hpp"
+#include <CLI/CLI.hpp>
 #include <iostream>
-#include <unistd.h>
 #include <string>
+#include <unistd.h>
+
+#include "context.hpp"
+#include "modules/install.hpp"
+#include "modules/list.hpp"
+#include "modules/new_config.hpp"
+#include "modules/remove.hpp"
+#include "modules/validator.hpp"
+#include "utils/config.hpp"
+#include "utils/symlinks.hpp"
 
 int main(int argc, char** argv) {
   if (!getuid()) {

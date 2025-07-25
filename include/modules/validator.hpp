@@ -1,7 +1,7 @@
 #pragma once
 
-#include "toml++/toml.hpp"
-#include "config.hpp"
+#include "utils/config.hpp"
+
 #include <string>
 #include <vector>
 

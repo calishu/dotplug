@@ -1,14 +1,11 @@
-#include "config.hpp"
-
-#include "toml++/toml.hpp"
-#include "settings.hpp"
-#include "context.hpp"
-#include <unordered_map>
 #include <filesystem>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
+#include "settings.hpp"
+#include "utils/config.hpp"
 
 Config::Config(const std::string& name) : name_(name) {
   parse_config();

@@ -1,13 +1,15 @@
+#include <cstdlib>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <stdlib.h>
+#include <string>
+#include <vector>
+
 #include <toml++/toml.hpp>
+
 #include "context.hpp"
 #include "settings.hpp"
-#include <filesystem>
-#include <stdlib.h>
-#include <iostream>
-#include <cstdlib>
-#include <fstream>
-#include <vector>
-#include <string>
 
 int new_config(const std::vector<std::string> &deps) {
   std::string path = dotfiles_path + ctx->name;
