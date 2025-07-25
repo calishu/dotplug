@@ -23,7 +23,8 @@ int main(int argc, char **argv) {
     argv = app.ensure_utf8(argv);
     app.require_subcommand();
 
-    std::string value; // stuff like names or links.
+    std::string value;     // stuff like names or links.
+    std::string snd_value; // second value
     auto dependencies = std::vector<std::string>{};
     bool forced       = false;
 
@@ -55,6 +56,17 @@ int main(int argc, char **argv) {
          remove_cmd   = config_cmd->add_subcommand("remove", "Remove a dotfile configuration."),
          apply_cmd    = config_cmd->add_subcommand("apply", "Apply a dotfile configuration."),
          show_cmd     = config_cmd->add_subcommand("show", "Shows a specific configuration.");
+
+    auto backup_cmd = app.add_subcommand("backup", "Manages the backups of your configuration files.");
+    backup_cmd->add_option("name", value, "The name of the configuration.")->required();
+
+    auto b_restore_cmd = backup_cmd->add_subcommand("restore", "Rolls back to the initial state, before dotplug."),
+         b_create_cmd  = backup_cmd->add_subcommand("create", "Create a backup of the configuration."),
+         b_apply_cmd   = backup_cmd->add_subcommand("apply", "Apply a backup of the configuration."),
+         b_list_cmd    = backup_cmd->add_subcommand("list", "Gives you a list of all backups on this configuration.");
+
+    b_apply_cmd->add_option("id", snd_value, "What is the backup id?")->required();
+    b_create_cmd->add_option("description", snd_value, "What is the description of the backup?");
 
     // auto disable_cmd = app.add_subcommand("disable", "Disables your current
     // configuration.");
