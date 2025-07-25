@@ -13,7 +13,7 @@
 
 int install() {
     if (!is_valid_url()) {
-        std::cout << "The provided value is not a URL!\n";
+        std::cerr << "The provided value is not a URL!\n";
         return 1;
     }
 
@@ -26,19 +26,20 @@ int install() {
     if (name.size() >= 4 && name.compare(name.size() - 4, 4, ".git") == 0)
         name.erase(name.size() - 4);
 
+    // all this does is a `git clone`... we don't need the entirety of libgit2...
+    // todo: remove libgit2, just popen("git clone ...") instead
     git_libgit2_init();
 
-    const git_error *err = git_error_last();
-    if (err && std::string(err->message) != "no error") {
+    const auto err = git_error_last();
+    if (err && std::string_view{err->message} != "no error") {
         std::cerr << "Something failed during the git initialization.\n" << err->message << '\n';
         return 1;
     }
 
-    std::string clone_path = dotfiles_path + name;
-    git_repository *repo_ptr = nullptr;
-    const int clone_return = git_clone(&repo_ptr, ctx->name.c_str(), clone_path.c_str(), NULL);
+    const auto clone_path = dotfiles_path + name;
+    git_repository *repo_ptr{};
 
-    if (clone_return != 0) {
+    if (git_clone(&repo_ptr, ctx->name.c_str(), clone_path.c_str(), NULL)) {
         std::cerr << "Something wen't wrong during the cloning process.\n" << git_error_last()->message << '\n';
         return 1;
     }

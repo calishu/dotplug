@@ -33,7 +33,7 @@ int remove_all_symlinks() {
 
     for (const auto &dep_name : dependencies) {
         const auto dep = active_config.get_dependency(dep_name);
-		const auto dst = dep.at("destination");
+        const auto dst = dep.at("destination");
 
         if (!fs::exists(dst)) {
             std::cout << "[ERROR] Couldn't find the destination.\n";
@@ -49,7 +49,7 @@ int remove_all_symlinks() {
                 continue;
         }
 
-		fs::remove(dst);
+        fs::remove(dst);
     }
 
     fs::remove(config_path + "current");

@@ -23,6 +23,6 @@ int remove_config() {
             return 0;
     }
 
-	fs::remove_all(path);
+    fs::remove_all(path);
     return 0;
 }

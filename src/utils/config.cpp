@@ -31,7 +31,7 @@ auto Config::parse_config() -> void {
 
 // Get the list of dependencies
 auto Config::get_dependencies() const -> std::vector<std::string> {
-    auto dependencies = std::vector<std::string>{};
+    auto dependencies     = std::vector<std::string>{};
     const auto deps_array = config_["dotplug"]["dependencies"].as_array();
 
     if (!deps_array || deps_array->empty())
@@ -53,7 +53,7 @@ auto Config::get_dependency(const std::string &dep_name) const -> std::unordered
     if (!config_["dotplug"][dep_name].is_table())
         throw std::runtime_error{dep_name + " doesn't exist or isn't a table"};
 
-    const auto source_node = config_["dotplug"][dep_name]["source"];
+    const auto source_node      = config_["dotplug"][dep_name]["source"];
     const auto destination_node = config_["dotplug"][dep_name]["destination"];
 
     // formatter doesn't respect existing ternary breaking, so just turn it off
@@ -75,16 +75,16 @@ auto Config::get_dependency(const std::string &dep_name) const -> std::unordered
         : (destination_path + dest_path);
     // clang-format on
 
-    output["source"] = source;
+    output["source"]      = source;
     output["destination"] = destination;
 
     return output;
 }
 
 auto Config::print(const std::string prefix) const -> void {
-    const auto name = config_["dotplug"]["name"].value_or<std::string>("Unknown Name"),
-               description = config_["dotplug"]["description"].value_or<std::string>(""),
-               author = config_["dotplug"]["author"].value_or<std::string>("");
+    const auto name         = config_["dotplug"]["name"].value_or<std::string>("Unknown Name"),
+               description  = config_["dotplug"]["description"].value_or<std::string>(""),
+               author       = config_["dotplug"]["author"].value_or<std::string>("");
     const auto dependencies = get_dependencies();
 
     std::cout << (!prefix.empty() ? "[" + prefix + "] " : "") << name << ":\n";
@@ -100,7 +100,7 @@ auto Config::print(const std::string prefix) const -> void {
 }
 
 auto Config::validate() const -> ValidationResult {
-    auto output = ValidationResult{};
+    auto output             = ValidationResult{};
     const auto dependencies = get_dependencies();
 
     if (dependencies.empty()) {
@@ -119,10 +119,8 @@ auto Config::validate() const -> ValidationResult {
         if (dep_infos.count("destination") && (dep_infos.at("destination").empty()))
             output.add_error("You need to add destination for " + dep);
 
-        if (dep_infos.count("source") &&
-            (dep_infos.at("source").empty() || !fs::exists(dep_infos.at("source")))) {
+        if (dep_infos.count("source") && (dep_infos.at("source").empty() || !fs::exists(dep_infos.at("source"))))
             output.add_error("Couldn't find source of " + dep);
-        }
     }
 
     return output;
