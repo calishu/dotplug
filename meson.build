@@ -29,7 +29,8 @@ include_dir = include_directories('include/')
 
 if get_option('RELEASE')
   add_project_arguments(
-    '-DDOTFILES_PATH="/.local/share/dotplug/dotfiles"/',
+    '-DDOTFILES_PATH="/.local/share/dotplug/dotfiles/"',
+    '-DBACKUP_PATH="/.local/share/dotplug/backups/"',
     '-DDESTINATION_PATH="/.config/"',
     '-DCONFIG_PATH="/.config/dotplug/"',
     '-DSTATE_PATH="/.local/state/dotplug/"',
@@ -38,6 +39,7 @@ if get_option('RELEASE')
 else
   add_project_arguments(
     '-DDOTFILES_PATH="/.local/share/dotplug-dev/dotfiles/"',
+    '-DBACKUP_PATH="/.local/share/dotplug-dev/backups/"',
     '-DDESTINATION_PATH="/.cache/dotplug-dev/"',
     '-DCONFIG_PATH="/.local/share/dotplug-dev/"',
     '-DSTATE_PATH="/.local/share/dotplug-dev/"',
