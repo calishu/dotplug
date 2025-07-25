@@ -89,9 +89,8 @@ int main(int argc, char **argv) {
 
     else if (config_cmd->parsed()) {
         if (validate_cmd->parsed()) {
-            Config config_ = Config(value);
-            ValidationResult validation_result = validator(config_.name());
-            print_validation(validation_result);
+            const auto validation_result = Config{value}.validate();
+            validation_result.print();
         } else if (remove_cmd->parsed())
             remove_config();
         else if (show_cmd->parsed())

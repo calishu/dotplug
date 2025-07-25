@@ -54,10 +54,10 @@ int install() {
         return 0;
 
     const Config config = Config(name);
-    ValidationResult validation_result = validator(config);
+    const auto validation_result = config.validate();
 
     if (validation_result.has_errors())
-        print_validation(validation_result);
+        validation_result.print();
 
     return 0;
 }

@@ -6,6 +6,8 @@
 
 #include <toml++/toml.hpp>
 
+#include "modules/validator.hpp"
+
 class Config {
     std::string name_;
     toml::table config_;
@@ -24,6 +26,8 @@ public:
 
     // formerly a free function called print_config(const Config &, ...)
     auto print(const std::string prefix = "") const -> void;
+
+	auto validate() const -> ValidationResult;
 
 private:
     auto parse_config() -> void;

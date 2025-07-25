@@ -98,3 +98,32 @@ auto Config::print(const std::string prefix) const -> void {
         std::cout << i << ", ";
     std::cout << "\n";
 }
+
+auto Config::validate() const -> ValidationResult {
+    auto output = ValidationResult{};
+    const auto dependencies = get_dependencies();
+
+    if (dependencies.empty()) {
+        std::cout << "You need at least a single dependency" << std::endl;
+        return output;
+    }
+
+    for (const auto &dep : dependencies) {
+        if (!config_["dotplug"][dep].is_table()) {
+            output.add_error(dep + " doesn't exist or it isn't a table");
+            continue;
+        }
+
+        const auto dep_infos = get_dependency(dep);
+
+        if (dep_infos.count("destination") && (dep_infos.at("destination").empty()))
+            output.add_error("You need to add destination for " + dep);
+
+        if (dep_infos.count("source") &&
+            (dep_infos.at("source").empty() || !fs::exists(dep_infos.at("source")))) {
+            output.add_error("Couldn't find source of " + dep);
+        }
+    }
+
+    return output;
+}

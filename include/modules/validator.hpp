@@ -1,7 +1,5 @@
 #pragma once
 
-#include "utils/config.hpp"
-
 #include <string>
 #include <vector>
 
@@ -15,23 +13,9 @@ struct ValidationResult {
 
     std::vector<Entries> log;
 
-    inline bool has_errors() const {
-        for (const auto &e : log)
-            if (e.type == Type::Error)
-                return true;
-        return false;
-    }
-
-    inline bool has_warnings() const {
-        for (const auto &e : log)
-            if (e.type == Type::Warning)
-                return true;
-        return false;
-    }
-
-    void add_error(std::string msg);
-    void add_warning(std::string msg);
+    auto has_errors() const -> bool;
+    auto has_warnings() const -> bool;
+    auto add_error(const std::string &msg) -> void;
+    auto add_warning(const std::string &msg) -> void;
+    auto print() const -> void;
 };
-
-void print_validation(ValidationResult &result);
-ValidationResult validator(const Config &config);
