@@ -50,7 +50,7 @@ std::vector<std::string> Config::get_dependencies() const {
 std::unordered_map<std::string, std::string> Config::get_dependency(const std::string& dep_name) const {
   std::unordered_map<std::string, std::string> output;
 
-  if (!config_.contains(dep_name) || !config_[dep_name].is_table()) {
+  if (!config_["dotplug"][dep_name].is_table()) {
     throw std::runtime_error(dep_name + " doesn't exist or isn't a table");
   }
 
