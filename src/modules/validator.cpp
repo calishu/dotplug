@@ -1,11 +1,10 @@
-#include "toml++/toml.hpp"
-#include "config.hpp"
-#include <unordered_map>
 #include <filesystem>
 #include <iostream>
-#include <vector>
-#include <format>
 #include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "utils/config.hpp"
 
 struct ValidationResult {
   enum class Type { Warning, Error };

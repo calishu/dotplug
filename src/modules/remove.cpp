@@ -1,8 +1,9 @@
-#include "settings.hpp"
-#include "context.hpp"
 #include <filesystem>
 #include <iostream>
 #include <string>
+
+#include "context.hpp"
+#include "settings.hpp"
 
 int remove_config() {
   std::string path = dotfiles_path + ctx->name;

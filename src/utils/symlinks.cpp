@@ -1,13 +1,13 @@
-#include "config.hpp"
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "context.hpp"
 #include "settings.hpp"
-#include "toml++/toml.hpp"
-#include <unordered_map>
-#include <filesystem>
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
+#include "utils/config.hpp"
 
 /* @brief Removes every active symlink from the config!
  *

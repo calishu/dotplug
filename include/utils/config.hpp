@@ -3,7 +3,8 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "toml++/toml.hpp"
+
+#include <toml++/toml.hpp>
 
 class Config {
 private: 
