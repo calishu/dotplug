@@ -77,9 +77,6 @@ jobs:
           source build/conanrun.sh
           meson compile -C build
 
-      # note: this uploads a dynamic executable, so systems you run it on need our dependencies installed.
-      # if we want, we can also build a static executable to avoid the above problem.
-      # this will take more build system work, though.
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
