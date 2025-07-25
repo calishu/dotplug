@@ -13,33 +13,34 @@
 
 int install() {
     if (!is_valid_url()) {
-        std::cout << "The provided value is not a URL!" << std::endl;
+        std::cerr << "The provided value is not a URL!\n";
         return 1;
     }
 
-    size_t last_slash = ctx->name.find_last_of("/");
+    const auto last_slash = ctx->name.find_last_of("/");
     if (last_slash == std::string::npos)
         return 1;
 
-    std::string name = ctx->name.substr(last_slash + 1);
+    auto name = ctx->name.substr(last_slash + 1);
 
     if (name.size() >= 4 && name.compare(name.size() - 4, 4, ".git") == 0)
         name.erase(name.size() - 4);
 
+    // all this does is a `git clone`... we don't need the entirety of libgit2...
+    // todo: remove libgit2, just popen("git clone ...") instead
     git_libgit2_init();
 
-    const git_error *err = git_error_last();
-    if (err && std::string(err->message) != "no error") {
-        std::cerr << "Something failed during the git initialization.\n" << err->message << std::endl;
+    const auto err = git_error_last();
+    if (err && std::string_view{err->message} != "no error") {
+        std::cerr << "Something failed during the git initialization.\n" << err->message << '\n';
         return 1;
     }
 
-    std::string clone_path = dotfiles_path + name;
-    git_repository *repo_ptr = nullptr;
-    const int clone_return = git_clone(&repo_ptr, ctx->name.c_str(), clone_path.c_str(), NULL);
+    const auto clone_path = dotfiles_path + name;
+    git_repository *repo_ptr{};
 
-    if (clone_return != 0) {
-        std::cerr << "Something wen't wrong during the cloning process.\n" << git_error_last()->message << std::endl;
+    if (git_clone(&repo_ptr, ctx->name.c_str(), clone_path.c_str(), NULL)) {
+        std::cerr << "Something wen't wrong during the cloning process.\n" << git_error_last()->message << '\n';
         return 1;
     }
 
@@ -53,11 +54,11 @@ int install() {
     if (validate_choice.empty() || validate_choice == "n" || validate_choice == "N")
         return 0;
 
-    const Config config = Config(name);
-    ValidationResult validation_result = validator(config);
+    const Config config{name};
+    const auto validation_result = config.validate();
 
     if (validation_result.has_errors())
-        print_validation(validation_result);
+        validation_result.print();
 
     return 0;
 }

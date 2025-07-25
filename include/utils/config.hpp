@@ -6,19 +6,28 @@
 
 #include <toml++/toml.hpp>
 
-class Config {
-private:
-    void parse_config();
+#include "modules/validator.hpp"
 
-public:
+class Config {
     std::string name_;
     toml::table config_;
 
+public:
     Config(const std::string &name);
 
-    std::vector<std::string> get_dependencies() const; // get all dependencies
-    std::unordered_map<std::string, std::string>
-    get_dependency(const std::string &dep_name) const; // get data from a specific dependency
-};
+    // get all dependencies
+    auto get_dependencies() const -> std::vector<std::string>;
 
-void print_config(const Config &config, const std::string prefix = "");
+    // get data from a specific dependency
+    auto get_dependency(const std::string &dep_name) const -> std::unordered_map<std::string, std::string>;
+
+    auto print(const std::string prefix = "") const -> void;
+    auto validate() const -> ValidationResult;
+
+    // getter methods
+    auto name() const { return name_; }
+    auto config() const { return config_; }
+
+private:
+    auto parse_config() -> void;
+};

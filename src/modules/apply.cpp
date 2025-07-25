@@ -9,34 +9,31 @@
 #include "utils/config.hpp"
 #include "utils/symlinks.hpp"
 
+namespace fs = std::filesystem;
+
 int apply() {
-    if (std::filesystem::exists(config_path + "current"))
+    if (fs::exists(config_path + "current"))
         remove_all_symlinks();
 
-    const Config config = Config(ctx->name);
+    const Config config{ctx->name};
 
-    for (std::string &dep_name : config.get_dependencies()) {
-        std::unordered_map<std::string, std::string> dep = config.get_dependency(dep_name);
+    for (const auto &dep_name : config.get_dependencies()) {
+        const auto dep = config.get_dependency(dep_name);
+        const auto src = dep.at("source"), dst = dep.at("destination");
 
-        if (!std::filesystem::exists(dep["source"])) {
-            std::cerr << "[ERROR] The source of " << dep_name << " couldn't be found!" << std::endl;
-            return 1;
-        }
-        if (dep["destination"].empty()) {
-            std::cerr << "[ERROR] Couldn't find the destination of " << dep_name << std::endl;
+        if (!fs::exists(src)) {
+            std::cerr << "[ERROR] The source of " << dep_name << " couldn't be found!\n";
             return 1;
         }
 
-        std::error_code err;
-        std::filesystem::create_directory_symlink(dep["source"], dep["destination"], err);
+        if (dst.empty()) {
+            std::cerr << "[ERROR] Couldn't find the destination of " << dep_name << '\n';
+            return 1;
+        }
 
-        if (err)
-            throw std::runtime_error(err.message());
+        fs::create_directory_symlink(src, dst);
     }
 
-    std::fstream current(config_path + "current");
-    current << (dotfiles_path + config.name_ + "/config.toml");
-    current.close();
-
+    std::ofstream{config_path + "current"} << (dotfiles_path + config.name() + "/config.toml");
     return 0;
 }
