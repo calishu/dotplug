@@ -1,13 +1,13 @@
-#include <unordered_map>
 #include <filesystem>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
+#include <unordered_map>
 
-#include "config.hpp"
 #include "context.hpp"
-#include "symlinks.hpp"
 #include "settings.hpp"
+#include "utils/config.hpp"
+#include "utils/symlinks.hpp"
 
 int apply() {
   if (std::filesystem::exists(config_path + "current")) {
