@@ -16,6 +16,7 @@ libgit2_dep = dependency('libgit2', method: 'pkg-config', required: true)
 src_files = files(
   'src/context.cpp',
   'src/main.cpp',
+  'src/modules/apply.cpp',
   'src/modules/install.cpp',
   'src/modules/list.cpp',
   'src/modules/new_config.cpp',

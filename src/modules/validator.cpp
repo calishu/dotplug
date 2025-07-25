@@ -43,14 +43,14 @@ ValidationResult validator(const Config& config) {
   }
 
   for (const std::string& dep : dependencies) {
-    const std::unordered_map<std::string, std::string> dep_infos = config.get_dependency(dep);
-    
-    if (!config.config_.contains(dep) || !config.config_[dep].is_table()) {
+    if (!config.config_["dotplug"][dep].is_table()) {
       output.add_error(dep + " doesn't exist or it isn't a table");
-      break;
+      continue;
     }
 
-    if (dep_infos.count("destination") && (dep_infos.at("destination").empty() || !std::filesystem::exists(dep_infos.at("destination")))) {
+    const std::unordered_map<std::string, std::string> dep_infos = config.get_dependency(dep);
+
+    if (dep_infos.count("destination") && (dep_infos.at("destination").empty())) {
       output.add_error("You need to add destination for " + dep);
     }
     
