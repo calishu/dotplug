@@ -4,6 +4,7 @@
 #include <unistd.h>
 
 #include "context.hpp"
+#include "modules/apply.hpp"
 #include "modules/install.hpp"
 #include "modules/list.hpp"
 #include "modules/new_config.hpp"
@@ -96,7 +97,7 @@ int main(int argc, char **argv) {
         else if (show_cmd->parsed())
             list();
         else if (apply_cmd->parsed())
-            std::cout << "This is just a placeholder owo" << std::endl;
+            apply();
         else if (disable_cmd->parsed())
             remove_all_symlinks();
         else
