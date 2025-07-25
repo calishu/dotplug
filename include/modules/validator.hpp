@@ -5,15 +5,20 @@
 
 class ValidationResult {
 public:
-    enum class Type { Warning, Error };
+    struct LogEntry {
+        enum class Type { Warning, Error };
 
-    struct Entries {
         std::string message;
         Type type;
+
+        // explicit constructor needed for usage with std::vector::emplace_back
+        LogEntry(const std::string &msg, const Type t)
+            : message{msg},
+              type{t} {}
     };
 
 private:
-    std::vector<Entries> log;
+    std::vector<LogEntry> log;
 
 public:
     auto has_errors() const -> bool;
