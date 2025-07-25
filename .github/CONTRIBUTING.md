@@ -14,3 +14,6 @@
 - Keep PRs focused. One fix or feature at a time.
 - Commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/) _(sounds fancy)_
 - Add unit tests if applicable.
+
+## C++ specific style
+See this PR: ["Small code style changes to improve readability, safety, & performance using modern C++ features"](https://github.com/calishu/dotplug/pull/5)
