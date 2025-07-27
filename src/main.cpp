@@ -1,4 +1,5 @@
 #include <CLI/CLI.hpp>
+#include <git2.h>
 #include <iostream>
 #include <string>
 #include <unistd.h>
@@ -77,6 +78,8 @@ int main(int argc, char **argv) {
 
     CLI11_PARSE(app, argc, argv);
 
+    git_libgit2_init();
+
     if (forced) {
         std::string proceed;
         std::cout << "Are you sure you want to continue and force the actions? "
@@ -118,4 +121,6 @@ int main(int argc, char **argv) {
         std::cerr << argv[0] << ": " << e.what() << '\n';
         return EXIT_FAILURE;
     }
+
+    git_libgit2_shutdown();
 }

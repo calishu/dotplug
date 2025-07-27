@@ -11,6 +11,7 @@ run_command(
 
 cli11_dep = dependency('CLI11', method: 'pkg-config', required: true)
 tomlpp_dep = dependency('tomlplusplus', method: 'pkg-config', required: true)
+libgit2_dep = dependency('libgit2', method: 'pkg-config', required: true)
 
 src_files = files(
   'src/context.cpp',
@@ -23,6 +24,7 @@ src_files = files(
   'src/modules/validator.cpp',
   'src/utils/config.cpp',
   'src/utils/format_check.cpp',
+  'src/utils/git.cpp',
   'src/utils/symlinks.cpp',
 )
 include_dir = include_directories('include/')
@@ -50,6 +52,6 @@ endif
 executable(
   'dotplug',
   src_files,
-  dependencies: [cli11_dep, tomlpp_dep],
+  dependencies: [cli11_dep, tomlpp_dep, libgit2_dep],
   include_directories: include_dir,
 )
