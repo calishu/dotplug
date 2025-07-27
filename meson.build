@@ -17,6 +17,7 @@ src_files = files(
   'src/context.cpp',
   'src/main.cpp',
   'src/modules/apply.cpp',
+  'src/modules/backup.cpp',
   'src/modules/install.cpp',
   'src/modules/list.cpp',
   'src/modules/new_config.cpp',
