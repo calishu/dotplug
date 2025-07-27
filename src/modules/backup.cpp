@@ -29,6 +29,13 @@ Backup::Backup(const Config &config)
             std::cerr << "[ERROR] Failed to initialize repo: \n" << err->message << "\n";
             return;
         }
+
+        std::error_code symlink_err;
+        fs::create_directory_symlink((dotfiles_path + config_.name()), backup_path_, symlink_err);
+        if (symlink_err) {
+            std::cerr << "Failed to create a symlink pointing to the config. \n" << symlink_err.message() << "\n";
+            return;
+        }
     }
 }
 
