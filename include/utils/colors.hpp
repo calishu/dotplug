@@ -110,4 +110,88 @@ inline std::ostream &light_white(std::ostream &os) {
     return os;
 }
 
+// background colors
+inline std::ostream &bg_black(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[40m";
+    return os;
+}
+inline std::ostream &bg_red(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[41m";
+    return os;
+}
+inline std::ostream &bg_green(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[42m";
+    return os;
+}
+inline std::ostream &bg_yellow(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[43m";
+    return os;
+}
+inline std::ostream &bg_blue(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[44m";
+    return os;
+}
+inline std::ostream &bg_magenta(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[45m";
+    return os;
+}
+inline std::ostream &bg_cyan(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[46m";
+    return os;
+}
+inline std::ostream &bg_white(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[47m";
+    return os;
+}
+
+// light background colors
+inline std::ostream &bg_light_black(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[100m";
+    return os;
+}
+inline std::ostream &bg_light_red(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[101m";
+    return os;
+}
+inline std::ostream &bg_light_green(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[102m";
+    return os;
+}
+inline std::ostream &bg_light_yellow(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[103m";
+    return os;
+}
+inline std::ostream &bg_light_blue(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[104m";
+    return os;
+}
+inline std::ostream &bg_light_magenta(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[105m";
+    return os;
+}
+inline std::ostream &bg_light_cyan(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[106m";
+    return os;
+}
+inline std::ostream &bg_light_white(std::ostream &os) {
+    if (is_color_enabled())
+        os << "\033[107m";
+    return os;
+}
+
 } // namespace colors
