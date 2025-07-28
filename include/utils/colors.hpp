@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-namespace color {
+namespace colors {
 
 inline bool is_color_enabled() {
     static bool enabled = (std::getenv("NO_COLOR") == nullptr);
@@ -110,4 +110,4 @@ inline std::ostream &light_white(std::ostream &os) {
     return os;
 }
 
-} // namespace color
+} // namespace colors
