@@ -1,6 +1,7 @@
 [requires]
 tomlplusplus/3.4.0
 cli11/2.5.0
+nlohmann_json/3.12.0
 
 [generators]
 MesonToolchain
