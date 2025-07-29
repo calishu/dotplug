@@ -19,6 +19,7 @@
 // clang-format off
 inline const auto home = std::string{getenv("HOME")},
                   state_path = home + STATE_PATH,
+                  share_path = home + SHARE_PATH,
                   config_path = home + CONFIG_PATH,
                   dotfiles_path = home + DOTFILES_PATH,
                   destination_path = home + DESTINATION_PATH;

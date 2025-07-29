@@ -37,7 +37,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 		CONFIG_PATH="/.config/dotplug/"
 		DOTFILES_PATH="/.local/share/dotplug/dotfiles/"
 		DESTINATION_PATH="/.config/"
-		STATE_PATH="/.local/state/dotplug"
+		STATE_PATH="/.local/state/dotplug/"
+		SHARE_PATH="/.local/share/dotplug/"
 	)
 else() # use dev paths for anything other than release
 	add_compile_definitions(
@@ -45,6 +46,7 @@ else() # use dev paths for anything other than release
 		DOTFILES_PATH="/.local/share/dotplug-dev/dotfiles/"
 		DESTINATION_PATH="/.cache/dotplug-dev/"
 		STATE_PATH="/.local/share/dotplug-dev/"
+		SHARE_PATH="/.local/share/dotplug-dev/"
 	)
 endif()
 

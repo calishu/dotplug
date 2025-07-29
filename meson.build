@@ -31,7 +31,8 @@ include_dir = include_directories('include/')
 
 if get_option('RELEASE')
   add_project_arguments(
-    '-DDOTFILES_PATH="/.local/share/dotplug/dotfiles"/',
+    '-DDOTFILES_PATH="/.local/share/dotplug/dotfiles/"',
+    '-DSHARE_PATH="/.local/share/dotplug/"',
     '-DDESTINATION_PATH="/.config/"',
     '-DCONFIG_PATH="/.config/dotplug/"',
     '-DSTATE_PATH="/.local/state/dotplug/"',
@@ -43,6 +44,7 @@ else
     '-DDESTINATION_PATH="/.cache/dotplug-dev/"',
     '-DCONFIG_PATH="/.local/share/dotplug-dev/"',
     '-DSTATE_PATH="/.local/share/dotplug-dev/"',
+    '-DSHARE_PATH="/.local/share/dotplug-dev/"',
     language: 'cpp',
   )
 endif
