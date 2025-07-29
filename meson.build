@@ -23,7 +23,7 @@ src_files = files(
   'src/modules/remove.cpp',
   'src/modules/validator.cpp',
   'src/utils/config.cpp',
-  'src/utils/format_check.cpp',
+  'src/utils/formatting.cpp',
   'src/utils/logging.cpp',
   'src/utils/symlinks.cpp',
 )
