@@ -14,7 +14,12 @@ class Logging {
 public:
     Logging(const LoggingLevel &level, const nlohmann::json &locale);
 
-    auto log(const LoggingLevel &level, const std::string &message, const std::string &note = "") -> void;
+    auto
+    log(const LoggingLevel &level,
+        const std::string &message,
+        const std::string &note   = "",
+        const std::string &prefix = "",
+        const std::string &suffix = "") -> void;
 
     inline auto level_to_string(LoggingLevel level) -> std::string {
         // clang-format off
@@ -42,6 +47,7 @@ public:
                 return colors::light_black;
             case LoggingLevel::INFO:
                 return colors::cyan;
+
             case LoggingLevel::WARNING:
                 return colors::yellow;
             case LoggingLevel::ERROR:
