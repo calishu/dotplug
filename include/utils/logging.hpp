@@ -1,18 +1,29 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
+#include <regex>
 #include <string>
 
 #include "utils/colors.hpp"
 
 enum class LoggingLevel { DEBUG, INFO, WARNING, ERROR, PROMPT };
 
+inline auto strip_ansi(const std::string &str) -> std::string {
+    static const std::regex ansi_regex("\x1B\\[[0-9;]*[a-zA-Z]");
+    return std::regex_replace(str, ansi_regex, "");
+}
+
 class Logging {
     LoggingLevel level_;
     nlohmann::json locale_;
+    std::fstream log_file_;
+    bool file_logging_enabled_ = false;
+    std::string log_file_path_;
+    std::ostringstream log_stream_;
 
 public:
-    Logging(const LoggingLevel &level, const nlohmann::json &locale);
+    Logging(const LoggingLevel &level, const nlohmann::json &locale, const bool log_to_file = false);
+    ~Logging();
 
     auto
     log(const LoggingLevel &level,
