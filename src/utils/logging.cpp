@@ -1,12 +1,14 @@
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <locale>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 
 #include "settings.hpp"
 #include "utils/colors.hpp"
+#include "utils/formatting.hpp"
 #include "utils/logging.hpp"
 
 namespace fs = std::filesystem;
@@ -75,4 +77,64 @@ auto Logging::log(
 
     if (file_logging_enabled_)
         log_stream_ << log_stream.str();
+}
+
+// specific is the value checked in a specific prompt mode.
+auto Logging::prompt(const PromptMode &mode, const std::string &prompt, const std::string &specific) -> std::string {
+beginning:
+    const auto locale         = std::locale();
+    const auto lower_specific = string_lower(specific, locale);
+
+    std::ostringstream log_stream;
+
+    log_stream << colors::light_black << "(" << colors::bold << level_get_color(LoggingLevel::PROMPT)
+               << level_to_string(LoggingLevel::PROMPT) << colors::reset << colors::light_black << ") " << colors::reset
+               << prompt << " ";
+
+    // prefix, e.g. number range, defaults, etc.
+    switch (mode) {
+    case PromptMode::BOOL:
+        if (lower_specific != "0" && lower_specific != "1")
+            throw std::logic_error("The specific of 'PromptMode::BOOL' must be a bool");
+        log_stream << "(" << (lower_specific == "0" ? "Y" : "y") << "/" << (lower_specific == "0" ? "n" : "N") << ")";
+
+    default:
+        break;
+    }
+
+    log_stream << ": ";
+    std::cout << log_stream.str();
+
+    std::string user_input;
+    std::getline(std::cin, user_input);
+
+    std::string lower_user_input = string_lower(user_input, locale);
+
+    switch (mode) {
+    // checks for the modes
+    case PromptMode::BOOL:
+        if (lower_user_input == "y")
+            return "true";
+        else if (lower_user_input == "n")
+            return "false";
+        else if (lower_user_input.empty())
+            return (lower_specific == "0" ? "true" : "false");
+        else {
+            log(LoggingLevel::ERROR, "Your input is not a choice.");
+            goto beginning;
+        }
+
+    case PromptMode::INTEGER:
+        try {
+            std::stoi(user_input);
+        } catch (std::exception &e) {
+            log(LoggingLevel::ERROR, "Your input is not a integer.");
+            goto beginning;
+        }
+
+    default:
+        break;
+    }
+
+    return lower_user_input;
 }

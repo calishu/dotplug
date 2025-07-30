@@ -1,17 +1,13 @@
 #pragma once
 
+#include <fstream>
 #include <nlohmann/json.hpp>
-#include <regex>
 #include <string>
 
 #include "utils/colors.hpp"
 
 enum class LoggingLevel { DEBUG, INFO, WARNING, ERROR, PROMPT };
-
-inline auto strip_ansi(const std::string &str) -> std::string {
-    static const std::regex ansi_regex("\x1B\\[[0-9;]*[a-zA-Z]");
-    return std::regex_replace(str, ansi_regex, "");
-}
+enum class PromptMode { BOOL, STRING, INTEGER };
 
 class Logging {
     LoggingLevel level_;
@@ -31,6 +27,8 @@ public:
         const std::string &note   = "",
         const std::string &prefix = "",
         const std::string &suffix = "") -> void;
+
+    auto prompt(const PromptMode &mode, const std::string &prompt, const std::string &specific) -> std::string;
 
     inline auto level_to_string(LoggingLevel level) -> std::string {
         // clang-format off
@@ -64,7 +62,7 @@ public:
             case LoggingLevel::ERROR:
                 return colors::light_red;
             case LoggingLevel::PROMPT:
-                return colors::light_cyan;
+                return colors::cyan;
             default:
                 throw std::invalid_argument(locale_["logging"]["errors"]["invalid_level"]);
 
