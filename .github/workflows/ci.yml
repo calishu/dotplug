@@ -14,6 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Prevent "Processing triggers for man-db" post-install hook
+        run: sudo rm /var/lib/man-db/auto-update
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -47,13 +50,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Prevent "Processing triggers for man-db" post-install hook
+        run: sudo rm /var/lib/man-db/auto-update
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             python3-pip \
             python3-setuptools \
-            ninja-build 
+            ninja-build
 
       - name: Install Conan and Meson
         run: pip3 install --upgrade conan meson

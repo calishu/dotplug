@@ -13,9 +13,9 @@
 
 namespace fs = std::filesystem;
 
-Logging::Logging(const LoggingLevel &level, const nlohmann::json &locale, const bool log_to_file)
+Logging::Logging(const LoggingLevel &level, const nlohmann::json &lang, const bool log_to_file)
     : level_(level),
-      locale_(locale) {
+      lang_(lang) {
     if (!log_to_file)
         return;
 
@@ -35,7 +35,8 @@ Logging::Logging(const LoggingLevel &level, const nlohmann::json &locale, const 
 
 Logging::~Logging() {
     if (file_logging_enabled_) {
-        std::cout << colors::light_black << "Log file is located at: " << log_file_path_ << "\n" << colors::reset;
+        std::cout << colors::light_black << lang_["logging"]["statements"]["file_location"] << log_file_path_ << "\n"
+                  << colors::reset;
         log_file_ << strip_ansi(log_stream_.str());
     }
 
@@ -49,8 +50,7 @@ auto Logging::log(
     const std::string &prefix,
     const std::string &suffix) -> void {
     if (level == LoggingLevel::PROMPT)
-        throw std::logic_error(
-            "You can't log a 'LoggingLevel::PROMPT', for that use function 'LoggingLevel::prompt'\n");
+        throw std::logic_error(lang_["logging"]["errors"]["no_prompt_log"]);
 
     if (level < level_)
         return;
@@ -95,7 +95,7 @@ beginning:
     switch (mode) {
     case PromptMode::BOOL:
         if (lower_specific != "0" && lower_specific != "1")
-            throw std::logic_error("The specific of 'PromptMode::BOOL' must be a bool");
+            throw std::logic_error(lang_["logging"]["errors"]["specific_bool_needs_bool"]);
         log_stream << "(" << (lower_specific == "0" ? "Y" : "y") << "/" << (lower_specific == "0" ? "n" : "N") << ")";
 
     default:
@@ -120,13 +120,13 @@ beginning:
         else if (lower_user_input.empty())
             return (lower_specific == "0" ? "true" : "false");
         else {
-            log(LoggingLevel::ERROR, "Your input is not a choice.");
+            log(LoggingLevel::ERROR, lang_["logging"]["errors"]["invalid_input_choice"]);
             goto beginning;
         }
 
     case PromptMode::STRING:
         if (specific.empty()) {
-            log(LoggingLevel::ERROR, "Your input cannot be empty.");
+            log(LoggingLevel::ERROR, lang_["logging"]["errors"]["string_input_empty"]);
             goto beginning;
         }
 
@@ -134,7 +134,7 @@ beginning:
         try {
             std::stoi(user_input);
         } catch (std::exception &e) {
-            log(LoggingLevel::ERROR, "Your input is not a integer.");
+            log(LoggingLevel::ERROR, lang_["logging"]["error"]["input_not_integer"]);
             goto beginning;
         }
 

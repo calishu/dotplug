@@ -1,0 +1,22 @@
+{
+  "logging": {
+    "types": {
+      "error": "error",
+      "warning": "warning",
+      "info": "info",
+      "debug": "debug",
+      "prompt": "prompt"
+    },
+    "errors": {
+      "invalid_level": "You entered an invalid level",
+      "no_prompt_log": "You can't log a 'LoggingLevel::PROMPT', for that use function 'LoggingLevel::prompt'",
+      "specific_bool_needs_bool": "The specific of 'PromptMode::BOOL' must be a bool",
+      "invalid_input_choice": "Your input is not a choice",
+      "string_input_empty": "Your input cannot be empty",
+      "input_not_integer": "Your input is not a number"
+    },
+    "statements": {
+      "file_location": "Log file is located at: "
+    }
+  }
+}

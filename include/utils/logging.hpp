@@ -11,7 +11,7 @@ enum class PromptMode { BOOL, STRING, INTEGER };
 
 class Logging {
     LoggingLevel level_;
-    nlohmann::json locale_;
+    nlohmann::json lang_;
     std::fstream log_file_;
     bool file_logging_enabled_ = false;
     std::string log_file_path_;
@@ -34,17 +34,17 @@ public:
         // clang-format off
         switch (level) {
             case LoggingLevel::DEBUG:
-                return locale_["logging"]["types"]["debug"];
+                return lang_["logging"]["types"]["debug"];
             case LoggingLevel::INFO:
-                return locale_["logging"]["types"]["info"];
+                return lang_["logging"]["types"]["info"];
             case LoggingLevel::WARNING:
-                return locale_["logging"]["types"]["warning"];
+                return lang_["logging"]["types"]["warning"];
             case LoggingLevel::ERROR:
-                return locale_["logging"]["types"]["error"];
+                return lang_["logging"]["types"]["error"];
             case LoggingLevel::PROMPT:
-                return locale_["logging"]["types"]["prompt"];
+                return lang_["logging"]["types"]["prompt"];
             default:
-                throw std::invalid_argument(locale_["logging"]["errors"]["invalid_level"]);
+                throw std::invalid_argument(lang_["logging"]["errors"]["invalid_level"]);
         }
         // clang-format on
     }
@@ -64,7 +64,7 @@ public:
             case LoggingLevel::PROMPT:
                 return colors::cyan;
             default:
-                throw std::invalid_argument(locale_["logging"]["errors"]["invalid_level"]);
+                throw std::invalid_argument(lang_["logging"]["errors"]["invalid_level"]);
 
         }
         // clang-format on
