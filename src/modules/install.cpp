@@ -8,7 +8,7 @@
 #include "modules/validator.hpp"
 #include "settings.hpp"
 #include "utils/config.hpp"
-#include "utils/format_check.hpp"
+#include "utils/formatting.hpp"
 
 int install() {
     if (!is_valid_url()) {
