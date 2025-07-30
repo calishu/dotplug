@@ -97,6 +97,7 @@ beginning:
         if (lower_specific != "0" && lower_specific != "1")
             throw std::logic_error(lang_["logging"]["errors"]["specific_bool_needs_bool"]);
         log_stream << "(" << (lower_specific == "0" ? "Y" : "y") << "/" << (lower_specific == "0" ? "n" : "N") << ")";
+        break;
 
     default:
         break;
@@ -123,20 +124,23 @@ beginning:
             log(LoggingLevel::ERROR, lang_["logging"]["errors"]["invalid_input_choice"]);
             goto beginning;
         }
+        break;
 
     case PromptMode::STRING:
-        if (specific.empty()) {
+        if (lower_user_input.empty()) {
             log(LoggingLevel::ERROR, lang_["logging"]["errors"]["string_input_empty"]);
             goto beginning;
         }
+        break;
 
     case PromptMode::INTEGER:
         try {
             std::stoi(user_input);
         } catch (std::exception &e) {
-            log(LoggingLevel::ERROR, lang_["logging"]["error"]["input_not_integer"]);
+            log(LoggingLevel::ERROR, lang_["logging"]["errors"]["input_not_integer"]);
             goto beginning;
         }
+        break;
 
     default:
         break;
