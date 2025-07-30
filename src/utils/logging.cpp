@@ -124,6 +124,12 @@ beginning:
             goto beginning;
         }
 
+    case PromptMode::STRING:
+        if (specific.empty()) {
+            log(LoggingLevel::ERROR, "Your input cannot be empty.");
+            goto beginning;
+        }
+
     case PromptMode::INTEGER:
         try {
             std::stoi(user_input);
