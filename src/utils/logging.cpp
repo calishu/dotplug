@@ -1,7 +1,6 @@
 #include <chrono>
 #include <filesystem>
 #include <fstream>
-#include <locale>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -13,9 +12,11 @@
 
 namespace fs = std::filesystem;
 
-Logging::Logging(const LoggingLevel &level, const nlohmann::json &lang, const bool log_to_file)
+Logging::Logging(const LoggingLevel &level, const locale_data &locale_, const bool log_to_file)
     : level_(level),
-      lang_(lang) {
+      locale_(locale_) {
+    lang_ = locale_.json;
+
     if (!log_to_file)
         return;
 
@@ -82,8 +83,7 @@ auto Logging::log(
 // specific is the value checked in a specific prompt mode.
 auto Logging::prompt(const PromptMode &mode, const std::string &prompt, const std::string &specific) -> std::string {
 beginning:
-    const auto locale         = std::locale();
-    const auto lower_specific = string_lower(specific, locale);
+    const auto lower_specific = string_lower(specific, locale_.locale);
 
     std::ostringstream log_stream;
 
@@ -109,7 +109,7 @@ beginning:
     std::string user_input;
     std::getline(std::cin, user_input);
 
-    std::string lower_user_input = string_lower(user_input, locale);
+    std::string lower_user_input = string_lower(user_input, locale_.locale);
 
     switch (mode) {
     // checks for the modes

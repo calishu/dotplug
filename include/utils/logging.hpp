@@ -5,12 +5,14 @@
 #include <string>
 
 #include "utils/colors.hpp"
+#include "utils/lang.hpp"
 
 enum class LoggingLevel { DEBUG, INFO, WARNING, ERROR, PROMPT };
 enum class PromptMode { BOOL, STRING, INTEGER };
 
 class Logging {
     LoggingLevel level_;
+    locale_data locale_;
     nlohmann::json lang_;
     std::fstream log_file_;
     bool file_logging_enabled_ = false;
@@ -18,7 +20,7 @@ class Logging {
     std::ostringstream log_stream_;
 
 public:
-    Logging(const LoggingLevel &level, const nlohmann::json &locale, const bool log_to_file = false);
+    Logging(const LoggingLevel &level, const locale_data &locale_, const bool log_to_file = false);
     ~Logging();
 
     auto
