@@ -3,12 +3,13 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <variant>
 
 #include "utils/colors.hpp"
 #include "utils/lang.hpp"
 
 enum class LoggingLevel { DEBUG, INFO, WARNING, ERROR, PROMPT };
-enum class PromptMode { BOOL, STRING, INTEGER };
+enum class PromptMode { BOOL, STRING, INTEGER, LIST };
 
 class Logging {
     LoggingLevel level_;
@@ -30,7 +31,8 @@ public:
         const std::string &prefix = "",
         const std::string &suffix = "") -> void;
 
-    auto prompt(const PromptMode &mode, const std::string &prompt, const std::string &specific) -> std::string;
+    auto prompt(const PromptMode &mode, const std::string &prompt, const std::string &specific)
+        -> std::variant<std::string, std::vector<std::string>, bool>;
 
     inline auto level_to_string(LoggingLevel level) -> std::string {
         // clang-format off

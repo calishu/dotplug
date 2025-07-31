@@ -81,7 +81,8 @@ auto Logging::log(
 }
 
 // specific is the value checked in a specific prompt mode.
-auto Logging::prompt(const PromptMode &mode, const std::string &prompt, const std::string &specific) -> std::string {
+auto Logging::prompt(const PromptMode &mode, const std::string &prompt, const std::string &specific)
+    -> std::variant<std::string, std::vector<std::string>, bool> {
 beginning:
     const auto lower_specific = string_lower(specific, locale_.locale);
 
@@ -97,6 +98,10 @@ beginning:
         if (lower_specific != "0" && lower_specific != "1")
             throw std::logic_error(lang_["logging"]["errors"]["specific_bool_needs_bool"]);
         log_stream << "(" << (lower_specific == "0" ? "Y" : "y") << "/" << (lower_specific == "0" ? "n" : "N") << ")";
+        break;
+
+    case PromptMode::LIST:
+        log_stream << "(Split with ',')";
         break;
 
     default:
@@ -115,9 +120,9 @@ beginning:
     // checks for the modes
     case PromptMode::BOOL:
         if (lower_user_input == "y")
-            return "true";
+            return true;
         else if (lower_user_input == "n")
-            return "false";
+            return false;
         else if (lower_user_input.empty())
             return (lower_specific == "0" ? "true" : "false");
         else {
@@ -142,8 +147,19 @@ beginning:
         }
         break;
 
-    default:
-        break;
+    case PromptMode::LIST:
+        if (user_input.empty() && specific == "true") {
+            log(LoggingLevel::WARNING, lang_["logging"]["error"]["list_is_empty"]);
+            goto beginning;
+        }
+
+        std::vector<std::string> result;
+        std::stringstream ss(user_input);
+        std::string token;
+
+        while (std::getline(ss, token, ','))
+            result.push_back(trim(token));
+        return result;
     }
 
     return lower_user_input;

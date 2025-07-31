@@ -27,3 +27,13 @@ auto string_lower(const std::string &string, const std::locale &locale) -> std::
 
     return result;
 }
+
+// deletes first whitespace if exists
+auto trim(const std::string &str) -> std::string {
+    size_t first = str.find_first_not_of(" \t\n\r");
+    if (first == std::string::npos)
+        return "";
+
+    size_t last = str.find_last_not_of(" \t\n\r");
+    return str.substr(first, (last - first + 1));
+}
