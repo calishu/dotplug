@@ -157,8 +157,11 @@ beginning:
         std::stringstream ss(user_input);
         std::string token;
 
-        while (std::getline(ss, token, ','))
+        while (std::getline(ss, token, ',')) {
+            if (trim(token).empty())
+                continue;
             result.push_back(trim(token));
+        }
         return result;
     }
 
