@@ -46,3 +46,9 @@ auto replace_format(std::string content, const std::string &replace) -> std::str
 
     return content;
 }
+
+auto resolve_path(const std::string &path) -> std::string {
+    if (path[0] != '~')
+        return path;
+    return std::getenv("HOME") + path.substr(1);
+}
