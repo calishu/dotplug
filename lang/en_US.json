@@ -1,4 +1,40 @@
 {
+  "cli": {
+    "description": "Dotplug is a easy-to-use dotfile manager for UNIX-based systems.",
+    "errors": {
+      "root_prohibited": "Using `sudo` or being logged into `root` is prohibited."
+    },
+    "prompts": {
+      "force_confirm": "Are you sure to continue with `force`?"
+    },
+    "commands": {
+      "force": "Force the actions and ignore warnings.",
+      "list": "Shows a list of all available configurations.",
+      "disable": {
+        "desc": "Disables the current dotfile setup.",
+        "name": "If you have multiple "
+      },
+      "install": {
+        "desc": "Install dotfiles from a remote repository.",
+        "url": "The URL of the git remote repository."
+      },
+      "init": {
+        "desc": "Initializes a new dotfile setup.",
+        "name": "The name of the dotfile setup you want to initialize.",
+        "dependencies": "The name of the dependencies for your dotfile setup."
+      },
+      "config": {
+        "desc": "Do actions with your dotfile setup.",
+        "name": "The name of the dotfile setup.",
+        "actions": {
+          "validate": "Validates if the specified dotfiles `config.toml` is valid.",
+          "delete": "Deletes the specified dotfile setup.",
+          "apply": "Applies the specified dotfile setup.",
+          "show": "Shows you information about the specified dotfile setup."
+        }
+      }
+    }
+  },
   "logging": {
     "types": {
       "error": "error",
@@ -13,10 +49,23 @@
       "specific_bool_needs_bool": "The specific of 'PromptMode::BOOL' must be a bool",
       "invalid_input_choice": "Your input is not a choice",
       "string_input_empty": "Your input cannot be empty",
-      "input_not_integer": "Your input is not a number"
+      "input_not_integer": "Your input is not a number",
+      "list_is_empty": "The list is empty."
     },
     "statements": {
       "file_location": "Log file is located at: "
+    }
+  },
+  "new_cfg": {
+    "prompts": {
+      "dependencies": "What are the dependencies (optional)",
+      "location": "Where is the path you want {} to be?",
+      "copy": "{} already exists. Do you want to copy the config in this?",
+      "backup": "Do you want to backup it instead?"
+    },
+    "errors": {
+      "already_exists": "The config already exists.",
+      "not_valid_path": "This isn't a valid path."
     }
   }
 }
