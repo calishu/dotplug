@@ -37,3 +37,12 @@ auto trim(const std::string &str) -> std::string {
     size_t last = str.find_last_not_of(" \t\n\r");
     return str.substr(first, (last - first + 1));
 }
+
+// replaces {} with provided content
+auto replace_format(std::string content, const std::string &replace) -> std::string {
+    size_t pos = content.find("{}");
+    if (pos != std::string::npos)
+        content.replace(pos, std::string("{}").length(), replace);
+
+    return content;
+}
