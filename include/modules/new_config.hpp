@@ -3,4 +3,4 @@
 #include <string>
 #include <vector>
 
-int new_config(const std::vector<std::string> &deps);
+int new_config(const std::string &name);
