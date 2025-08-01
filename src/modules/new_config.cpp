@@ -15,7 +15,7 @@
 
 namespace fs = std::filesystem;
 
-int new_config(const std::string &name) {
+int new_config(const std::string &name, const std::vector<std::string> &deps) {
     auto *logging   = ctx->logging;
     auto locale     = &ctx->locale;
     const auto path = dotfiles_path + name;
@@ -33,8 +33,9 @@ int new_config(const std::string &name) {
     dotplug.insert("name", name);
     dotplug.insert("author", user ? user : "unknown");
 
-    auto deps = std::get<std::vector<std::string>>(
-        logging->prompt(PromptMode::LIST, locale->json["new_cfg"]["prompts"]["dependencies"], "false"));
+    if (deps.empty())
+        auto deps = std::get<std::vector<std::string>>(
+            logging->prompt(PromptMode::LIST, locale->json["new_cfg"]["prompts"]["dependencies"], "false"));
 
     if (!deps.empty()) {
         toml::array deps_array;
