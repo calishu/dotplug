@@ -24,6 +24,7 @@ src_files = files(
   'src/modules/validator.cpp',
   'src/utils/config.cpp',
   'src/utils/formatting.cpp',
+  'src/utils/lang.cpp',
   'src/utils/logging.cpp',
   'src/utils/symlinks.cpp',
 )
