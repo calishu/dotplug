@@ -67,5 +67,13 @@
       "already_exists": "The config already exists.",
       "not_valid_path": "This isn't a valid path."
     }
+  },
+  "remove": {
+    "prompts": {
+      "confirmation": "Are you sure to delete the config?"
+    },
+    "errors": {
+      "doesnt_exist": "The config doesn't exist."
+    }
   }
 }

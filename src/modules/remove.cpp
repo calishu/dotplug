@@ -1,9 +1,9 @@
 #include <filesystem>
-#include <iostream>
 #include <string>
 
 #include "context.hpp"
 #include "settings.hpp"
+#include "utils/logging.hpp"
 
 namespace fs = std::filesystem;
 
@@ -11,15 +11,13 @@ int remove_config() {
     const auto path = dotfiles_path + ctx->name;
 
     if (!fs::exists(path)) {
-        std::cout << "The config doesn't exist.\n";
+        ctx->logging->log(LoggingLevel::ERROR, ctx->locale.json["remove"]["errors"]["doesnt_exist"]);
         return 1;
     }
 
     if (!ctx->forced) {
-        std::string choice;
-        std::cout << "Do you really want to delete the config? (y/N) ";
-        std::getline(std::cin, choice);
-        if (choice != "y" && choice != "Y")
+        if (!std::get<bool>(
+                ctx->logging->prompt(PromptMode::BOOL, ctx->locale.json["remove"]["prompts"]["confirmation"], "1")))
             return 0;
     }
 
