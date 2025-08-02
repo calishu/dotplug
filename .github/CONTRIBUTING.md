@@ -15,7 +15,8 @@
 3. Install [`git`](https://git-scm.com/), [`meson`](https://mesonbuild.com/) and [`conan`](https://conan.io/) on your system.
 4. Setup `conan` for your system with `conan profile new default --detect`.
 5. Go inside the project folder and install the dependencies with `conan install . --output-folder=build --build=missing`
-6. Now setup `meson` with `meson setup build`\
+6. Now setup `meson` with `meson setup build`
+
 Now you're basically done with the process and you can start with the development.\
 For compiling the project run `meson compile -C build` in the terminal, after that you can dotplug using `./build/dotplug`.\
 For changes directly involving meson, you should consider using the `--reconfigure` flag.
@@ -31,7 +32,8 @@ For changes directly involving meson, you should consider using the `--reconfigu
   3. The order of the includes are alphabetical.
 - Language:
   1. Do **NOT** hardcode user-facing strings, they must be added to the JSON translation.
-  2. In development of this project the focus lays on `/lang/en_US.json`.\
+  2. In development of this project the focus lays on `/lang/en_US.json`.
+
 *Please format your code using [clang-format](https://github.com/calishu/dotplug/blob/main/.clang-format), or just run the [`format.sh`](https://github.com/calishu/dotplug/blob/main/format.sh) file.*
 
 ## C++ specific style
@@ -40,7 +42,8 @@ For changes directly involving meson, you should consider using the `--reconfigu
 - Use `auto function([...]) -> return_type` declaration syntax, inspired by modern programming languages.
 - Use brace-initializers for object constructor calls. It's subjective, but this helps us speparate between normal functions calls from constructors.
 - Use short and clear namespace aliases when it's too long. (e.g. `namespace fs = std::filesystem;`)
-- Always use `std::vector::emplace_back` over `push_back`.\
+- Always use `std::vector::emplace_back` over `push_back`.
+
 *Read [this Pull Request](https://github.com/calishu/dotplug/pull/5) for a more clear description of the reason.*
 
 ## Translation Guide
