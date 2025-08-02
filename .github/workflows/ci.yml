@@ -1,4 +1,4 @@
-name: Build
+name: CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches-ignore: []
 
 jobs:
-  cmake:
+  cmake-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,7 +43,7 @@ jobs:
           path: |
             build/dotplug
 
-  meson:
+  meson-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -93,3 +93,55 @@ jobs:
           name: dotplug-meson
           path: |
             build/dotplug
+
+  format-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Prevent "Processing triggers for man-db" post-install hook
+      run: sudo rm /var/lib/man-db/auto-update
+
+    - name: Add LLVM repo for clang-format 19+
+      run: |
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo bash -c 'echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-19 main" > /etc/apt/sources.list.d/llvm.list'
+        sudo apt-get update
+
+    - name: Install clang-format
+      run: sudo apt-get install -y clang-format-19
+
+    - name: Run clang-format check
+      id: clangformat
+      continue-on-error: true
+      run: |
+        if git ls-files '*.cpp' '*.hpp' '*.h' | xargs clang-format-19 --dry-run --Werror; then
+          echo "clang-format passed"
+          echo "status=passed" >> $GITHUB_OUTPUT
+        else
+          echo "clang-format failed"
+          echo "status=failed" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Comment on PR if clang-format failed
+      if: ${{ github.event_name == 'pull_request' && steps.clangformat.outputs.status == 'failed' }}
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          > [!CAUTION]
+          > **clang-format** says that your changes are not formatted correctly.
+          > Please run the [`format.sh`](https://github.com/calishu/dotplug/blob/main/format.sh) file, or use this command:
+          > ```bash
+          > find src include -name '*.cpp' -o -name '*.hpp' | xargs clang-format -i
+          > ```
+
+    - name: Fail job if clang-format failed
+      if: steps.clangformat.outputs.status == 'failed'
+      run: exit 1
