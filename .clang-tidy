@@ -1,0 +1,41 @@
+# Notes (for me lol):
+#   - Add the character `-` at the beginning to disable something.
+#   - You need to add `,` at the beginning and ending of a comment when in a list (e.g. `Checks`).
+
+Checks: >-
+  clang-diagnostic-*,
+  clang-analyzer-*,
+
+  bugprone-*,
+  -bugprone-unchecked-optional-access,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-chained-comparison,
+
+  modernize-*,
+  -modernize-pass-by-value,
+  -modernize-return-braced-init-list,
+  -modernize-use-default-member-init,
+  -modernize-avoid-c-arrays,
+  -modernize-replace-auto-ptr,
+
+  performance-*,
+
+  readability-*,
+  -readability-braces-around-statements,
+  -readability-function-size,
+  -readability-identifier-length,
+  -readability-implicit-bool-conversion,
+  -readability-isolate-declaration,
+  -readability-magic-numbers,
+  -readability-math-missing-parentheses,
+  -readability-static-definition-in-anonymous-namespace,
+  -readability-uppercase-literal-suffix,
+  -readability-use-anyofallof,
+  -readability-avoid-return-with-void-value,
+  -readability-identifier-naming,
+
+  -cppcoreguidelines-avoid-goto,
+
+HeaderFilterRegex: './src/*'
+FormatStyle: none
