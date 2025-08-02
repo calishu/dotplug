@@ -31,7 +31,8 @@ For changes directly involving meson, you should consider using the `--reconfigu
   3. The order of the includes are alphabetical.
 - Language:
   1. Do **NOT** hardcode user-facing strings, they must be added to the JSON translation.
-  2. In development of this project the focus lays on `/lang/en_US.json`.
+  2. In development of this project the focus lays on `/lang/en_US.json`.\
+*Please format your code using [clang-format](https://github.com/calishu/dotplug/blob/main/.clang-format), or just run the [`format.sh`](https://github.com/calishu/dotplug/blob/main/format.sh) file.*
 
 ## C++ specific style
 - Don't access public members of objects, rather create a getter function in that class.
