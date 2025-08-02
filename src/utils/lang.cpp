@@ -24,7 +24,10 @@ auto get_locale() -> locale_data {
         std::ifstream fallback("lang/en_US.json");
         if (!fallback.is_open())
             throw std::runtime_error(
-                "Something went definitely wrong, please reinstall dotplug or restore the 'lang/en_US.json' file.");
+                std::string(
+                    "Something went definitely wrong, please reinstall dotplug or restore the 'lang/en_US.json' "
+                    "file.\n\n") +
+                e.what());
         fallback >> parsed;
     }
 
