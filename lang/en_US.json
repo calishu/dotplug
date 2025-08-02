@@ -75,5 +75,18 @@
     "errors": {
       "doesnt_exist": "The config doesn't exist."
     }
+  },
+  "install": {
+    "statements": {
+      "success": "Downloaded the configuration successfully.",
+      "status": "Git exited with status: "
+    },
+    "prompts": {
+      "validation": "Want to validate it?"
+    },
+    "errors": {
+      "invalid_url": "The provided URL is not valid.",
+      "clone_failed": "`git clone` failed."
+    }
   }
 }
