@@ -3,18 +3,20 @@
 #include <string>
 #include <vector>
 
+#include "utils/logging.hpp"
+
 class ValidationResult {
 public:
     struct LogEntry {
         enum class Type { Warning, Error };
 
         std::string message;
-        Type type;
+        LoggingLevel level_;
 
         // explicit constructor needed for usage with std::vector::emplace_back
-        LogEntry(const std::string &msg, const Type t)
+        LogEntry(const std::string &msg, const LoggingLevel level)
             : message{msg},
-              type{t} {}
+              level_{level} {}
     };
 
 private:
