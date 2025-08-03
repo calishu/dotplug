@@ -88,5 +88,27 @@
       "invalid_url": "The provided URL is not valid.",
       "clone_failed": "`git clone` failed."
     }
+  },
+  "config": {
+    "errors": {
+      "no_config_toml": "The config doesn't have a config.toml!",
+      "parsing_failed": "Parsing Failed",
+      "doesnt_exist_or_no_table": "{} does not exist or isn't a table.",
+      "no_deps": "You don't have any dependencies."
+    },
+    "words": {
+      "description": "Description",
+      "author": "Author",
+      "dependencies": "Dependencies"
+    }
+  },
+  "validation": {
+    "statements": {
+      "success": "Everything is fine with the configuration."
+    },
+    "errors": {
+      "source_not_found": "Couldn't find the source of {}",
+      "destination_required": "You need to add a destination for {}"
+    }
   }
 }

@@ -1,14 +1,5 @@
 project('dotplug', 'cpp', default_options: ['cpp_std=c++23'])
 
-run_command(
-  'conan',
-  'install',
-  '.',
-  '--output-folder=build',
-  '--build=missing',
-  check: true,
-)
-
 cli11_dep = dependency('CLI11', method: 'pkg-config', required: true)
 tomlpp_dep = dependency('tomlplusplus', method: 'pkg-config', required: true)
 nlohmann_json = dependency('nlohmann_json', method: 'pkg-config', required: true)
@@ -49,6 +40,8 @@ else
     language: 'cpp',
   )
 endif
+
+run_command('ln', '-sf', 'build/compile_commands.json', 'compile_commands.json')
 
 executable(
   'dotplug',
