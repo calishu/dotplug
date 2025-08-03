@@ -110,5 +110,14 @@
       "source_not_found": "Couldn't find the source of {}",
       "destination_required": "You need to add a destination for {}"
     }
+  },
+  "apply": {
+    "statements": {
+      "success": "Successfully applied the config"
+    },
+    "errors": {
+      "source_not_found": "The source of {} couldn't be found!",
+      "destination_not_found": "The destination of {} couldn't be found!"
+    }
   }
 }
