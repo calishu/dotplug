@@ -149,7 +149,7 @@ beginning:
 
     case PromptMode::LIST:
         if (user_input.empty() && specific == "true") {
-            log(LoggingLevel::WARNING, lang_["logging"]["error"]["list_is_empty"]);
+            log(LoggingLevel::WARNING, lang_["logging"]["errors"]["list_is_empty"]);
             goto beginning;
         }
 
