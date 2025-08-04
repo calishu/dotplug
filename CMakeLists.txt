@@ -30,7 +30,16 @@ endif()
 find_package(tomlplusplus REQUIRED)
 link_libraries(tomlplusplus::tomlplusplus)
 
-include_directories(include)
+# nlohmann json
+find_package(nlohmann_json QUIET)
+if(nlohmann_json_FOUND)
+	message("Found nlohmann_json (package)")
+else()
+	message("Could not find nlohmann_json, fetching source...")
+	FetchContent_Declare(nlohmann_json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
+	FetchContent_MakeAvailable(nlohmann_json)
+endif()
+link_libraries(nlohmann_json::nlohmann_json)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	add_compile_definitions(
