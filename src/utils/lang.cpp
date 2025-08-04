@@ -11,7 +11,7 @@ auto get_locale() -> locale_data {
     locale_data locale;
 
     std::locale loc("");
-    std::string name = loc.name().substr(0, loc.name().find("."));
+    std::string name = loc.name().substr(0, loc.name().find('.'));
 
     nlohmann::json parsed;
 
