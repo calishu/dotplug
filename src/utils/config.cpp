@@ -104,9 +104,9 @@ auto Config::print(const std::string &prefix) const -> void {
 
     size_t i = 0;
     for (const auto &dep : dependencies) {
-        if (i < dependencies.size())
-            break;
-        std::cout << dep << ", ";
+        std::cout << dep;
+        if (i < dependencies.size() - 1)
+            std::cout << ", ";
         ++i;
     }
 
