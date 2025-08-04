@@ -1,17 +1,20 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
 
 #include "context.hpp"
 #include "settings.hpp"
 #include "utils/config.hpp"
+#include "utils/formatting.hpp"
+#include "utils/logging.hpp"
 #include "utils/symlinks.hpp"
 
 namespace fs = std::filesystem;
 
-int apply() {
+auto apply() -> int {
     if (fs::exists(state_path + "current_configuration"))
         remove_all_symlinks();
 
@@ -22,12 +25,15 @@ int apply() {
         const auto src = dep.at("source"), dst = dep.at("destination");
 
         if (!fs::exists(src)) {
-            std::cerr << "[ERROR] The source of " << dep_name << " couldn't be found!\n";
+            ctx->logging->log(
+                LoggingLevel::ERROR, replace_format(ctx->locale.json["apply"]["errors"]["source_not_found"], dep_name));
             return 1;
         }
 
         if (dst.empty()) {
-            std::cerr << "[ERROR] Couldn't find the destination of " << dep_name << '\n';
+            ctx->logging->log(
+                LoggingLevel::ERROR,
+                replace_format(ctx->locale.json["apply"]["errors"]["destination_not_found"], dep_name));
             return 1;
         }
 
@@ -35,5 +41,6 @@ int apply() {
     }
 
     std::ofstream{state_path + "current_configuration"} << (dotfiles_path + config.name() + "/config.toml");
+    ctx->logging->log(LoggingLevel::INFO, ctx->locale.json["apply"]["statements"]["success"]);
     return 0;
 }

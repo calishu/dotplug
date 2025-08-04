@@ -1,0 +1,130 @@
+{
+  "cli": {
+    "description": "Dotplug is a easy-to-use dotfile manager for UNIX-based systems.",
+    "errors": {
+      "root_prohibited": "Using `sudo` or being logged into `root` is prohibited."
+    },
+    "prompts": {
+      "force_confirm": "Are you sure to continue with `force`?"
+    },
+    "commands": {
+      "force": "Force the actions and ignore warnings.",
+      "list": "Shows a list of all available configurations.",
+      "disable": {
+        "desc": "Disables the current dotfile setup.",
+        "name": "If you have multiple "
+      },
+      "install": {
+        "desc": "Install dotfiles from a remote repository.",
+        "url": "The URL of the git remote repository."
+      },
+      "init": {
+        "desc": "Initializes a new dotfile setup.",
+        "name": "The name of the dotfile setup you want to initialize.",
+        "dependencies": "The name of the dependencies for your dotfile setup."
+      },
+      "config": {
+        "desc": "Do actions with your dotfile setup.",
+        "name": "The name of the dotfile setup.",
+        "actions": {
+          "validate": "Validates if the specified dotfiles `config.toml` is valid.",
+          "delete": "Deletes the specified dotfile setup.",
+          "apply": "Applies the specified dotfile setup.",
+          "show": "Shows you information about the specified dotfile setup."
+        }
+      }
+    }
+  },
+  "logging": {
+    "types": {
+      "error": "error",
+      "warning": "warning",
+      "info": "info",
+      "debug": "debug",
+      "prompt": "prompt"
+    },
+    "errors": {
+      "invalid_level": "You entered an invalid level",
+      "no_prompt_log": "You can't log a 'LoggingLevel::PROMPT', for that use function 'LoggingLevel::prompt'",
+      "specific_bool_needs_bool": "The specific of 'PromptMode::BOOL' must be a bool",
+      "invalid_input_choice": "Your input is not a choice",
+      "string_input_empty": "Your input cannot be empty",
+      "input_not_integer": "Your input is not a number",
+      "list_is_empty": "The list is empty."
+    },
+    "statements": {
+      "file_location": "Log file is located at: "
+    }
+  },
+  "new_cfg": {
+    "prompts": {
+      "dependencies": "What are the dependencies (optional)",
+      "location": "Where is the path you want {} to be?",
+      "copy": "{} already exists. Do you want to copy the config in this?",
+      "backup": "Do you want to backup it instead?"
+    },
+    "errors": {
+      "already_exists": "The config already exists.",
+      "not_valid_path": "This isn't a valid path."
+    }
+  },
+  "remove": {
+    "prompts": {
+      "confirmation": "Are you sure to delete the config?"
+    },
+    "errors": {
+      "doesnt_exist": "The config doesn't exist."
+    }
+  },
+  "install": {
+    "statements": {
+      "success": "Downloaded the configuration successfully.",
+      "status": "Git exited with status: "
+    },
+    "prompts": {
+      "validation": "Want to validate it?"
+    },
+    "errors": {
+      "invalid_url": "The provided URL is not valid.",
+      "clone_failed": "`git clone` failed."
+    }
+  },
+  "config": {
+    "errors": {
+      "no_config_toml": "The config doesn't have a config.toml!",
+      "parsing_failed": "Parsing Failed",
+      "doesnt_exist_or_no_table": "{} does not exist or isn't a table.",
+      "no_deps": "You don't have any dependencies."
+    },
+    "words": {
+      "description": "Description",
+      "author": "Author",
+      "dependencies": "Dependencies"
+    }
+  },
+  "validation": {
+    "statements": {
+      "success": "Everything is fine with the configuration."
+    },
+    "errors": {
+      "source_not_found": "Couldn't find the source of {}",
+      "destination_required": "You need to add a destination for {}"
+    }
+  },
+  "apply": {
+    "statements": {
+      "success": "Successfully applied the config"
+    },
+    "errors": {
+      "source_not_found": "The source of {} couldn't be found!",
+      "destination_not_found": "The destination of {} couldn't be found!"
+    }
+  },
+  "rm_symlinks": {
+    "errors": {
+      "destination_not_found": "Couldn't find the destination of {}",
+      "no_active_config": "There is no active config!",
+      "not_a_symlink": "{} isn't a symlink! Want to delete it?"
+    }
+  }
+}

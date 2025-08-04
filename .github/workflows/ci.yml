@@ -75,12 +75,12 @@ jobs:
           restore-keys: ${{ runner.os }}-conan-
 
       - name: Install dependencies with Conan
-        run: conan install . --output-folder=build --build=missing
+        run: conan install . --output-folder=build --build=missing -s compiler.cppstd=23
 
       - name: Configure Meson
         run: |
           source build/conanbuild.sh
-          meson setup build --native-file=build/conan_meson_native.ini
+          meson setup build --native-file=build/conan_meson_native.ini -Dcpp_std=c++23
 
       - name: Build Project
         run: |

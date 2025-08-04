@@ -1,5 +1,6 @@
 #include <CLI/CLI.hpp>
-#include <iostream>
+#include <cstdlib>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <unistd.h>
 
@@ -10,100 +11,112 @@
 #include "modules/new_config.hpp"
 #include "modules/remove.hpp"
 #include "modules/validator.hpp"
+#include "utils/colors.hpp"
 #include "utils/config.hpp"
+#include "utils/lang.hpp"
+#include "utils/logging.hpp"
 #include "utils/symlinks.hpp"
 
+struct init_opts_ {
+    std::string name;
+    std::vector<std::string> dependencies;
+};
+
 int main(int argc, char **argv) {
+    auto locale = get_locale();
+    auto lang   = locale.json;
+
+    auto logging = Logging{LoggingLevel::DEBUG, locale, false};
+
+    // check if `sudo` or in root
     if (!getuid()) {
-        std::cerr << "Using `sudo` is prohibited.\n";
+        logging.log(LoggingLevel::ERROR, lang["cli"]["errors"]["root_prohibited"]);
         return EXIT_FAILURE;
     }
 
-    CLI::App app{"Dotplug is a easy-to-use dotfile manager for linux."};
+    CLI::App app{lang["cli"]["description"]};
+
     argv = app.ensure_utf8(argv);
     app.require_subcommand();
 
-    std::string value; // stuff like names or links.
-    auto dependencies = std::vector<std::string>{};
-    bool forced       = false;
+    bool forced = false;
 
     auto add_force_flag = [&](CLI::App *cmd) {
-        cmd->add_flag("-f,--force", forced, "Force the action and ignore warnings (CAUTION!)");
+        cmd->add_flag("-f,--force", forced, lang["cli"]["commands"]["force"]);
     };
 
-    // auto add_flag = [&](CLI::App* cmd, const std::string& name, const
-    // std::string& description) {
-    //   cmd->add_flag(name, description);
-    // };
+    /// `dotplug list`
+    auto list_cmd = app.add_subcommand("list", lang["cli"]["commands"]["list"]);
 
-    auto list_cmd = app.add_subcommand("list", "Shows a list of all installed configurations.");
+    /// `dotplug disable`
+    // std::string disable_url;
+    auto disable_cmd = app.add_subcommand("disable", lang["cli"]["commands"]["disable"]["desc"]);
+    // disable_cmd->add_option("name", disable_url, lang["cli"]["commands"]["disable"]["desc"]);
 
-    auto install_cmd = app.add_subcommand("install", "Install a dotfile configuration from remote repository.");
-    install_cmd->add_option("url", value, "The Git URL of the remote repository.")->required();
+    /// `dotplug install <url>`
+    std::string install_url;
+    auto install_cmd = app.add_subcommand("install", lang["cli"]["commands"]["install"]["desc"]);
+    install_cmd->add_option("url", install_url, lang["cli"]["commands"]["install"]["url"]);
 
-    auto init_cmd = app.add_subcommand("init", "Initializes a new dotfile configuration.");
-    init_cmd->add_option("name", value, "The name of the dotfile configuration you want to initialize.")->required();
-    init_cmd->add_option("-d,--dependencies", dependencies, "List of the dependencies of the config you add.")
-        ->expected(-1)
-        ->required();
+    /// `dotplug init <name> (optional)<dependencies>`
+    init_opts_ init_opts;
+    auto init_cmd = app.add_subcommand("init", lang["cli"]["commands"]["init"]["desc"]);
+    init_cmd->add_option("name", init_opts.name, lang["cli"]["commands"]["init"]["name"])->required();
+    init_cmd->add_option("-d,--dependencies", init_opts.dependencies, lang["cli"]["commands"]["init"]["dependencies"])
+        ->allow_extra_args(true);
 
-    auto config_cmd = app.add_subcommand("config", "Do stuff with your configuration.");
-    config_cmd->add_option("name", value, "The name of the configuration.")->required();
+    /// `dotplug config <name> <action>`
+    std::string config_name;
+    auto config_cmd = app.add_subcommand("config", lang["cli"]["commands"]["config"]["desc"]);
+    config_cmd->add_option("name", config_name, lang["cli"]["commands"]["config"]["name"]);
 
-    auto validate_cmd = config_cmd->add_subcommand("validate", "Check if the configuration config is valid."),
-         disable_cmd  = config_cmd->add_subcommand("disable", "Disable the current configuration."),
-         remove_cmd   = config_cmd->add_subcommand("remove", "Remove a dotfile configuration."),
-         apply_cmd    = config_cmd->add_subcommand("apply", "Apply a dotfile configuration."),
-         show_cmd     = config_cmd->add_subcommand("show", "Shows a specific configuration.");
+    // clang-format off
+    auto validate_action = config_cmd->add_subcommand("validate",lang["cli"]["commands"]["config"]["actions"]["validate"]), 
+         delete_action   = config_cmd->add_subcommand("delete", lang["cli"]["commands"]["config"]["actions"]["delete"]),
+         apply_action    = config_cmd->add_subcommand("apply", lang["cli"]["commands"]["config"]["actions"]["apply"]),
+         show_action     = config_cmd->add_subcommand("show", lang["cli"]["commands"]["config"]["actions"]["show"]);
+    // clang-format on
 
-    // auto disable_cmd = app.add_subcommand("disable", "Disables your current
-    // configuration.");
-
-    add_force_flag(remove_cmd);
-    // add_flag(remove_cmd, "-f,--force", forced, "Force the action and ignore
-    // warnings (CAUTION!)");
+    add_force_flag(delete_action);
 
     CLI11_PARSE(app, argc, argv);
 
-    if (forced) {
-        std::string proceed;
-        std::cout << "Are you sure you want to continue and force the actions? "
-                     "(y/N) ";
-        std::getline(std::cin, proceed);
+    if (forced && !std::get<bool>(logging.prompt(PromptMode::BOOL, lang["cli"]["prompts"]["force_confirm"], "1")))
+        return 0;
 
-        if (proceed == "N" || proceed == "n" || proceed.empty())
-            return 0;
-    }
-    ctx->forced = forced;
-
-    if (!value.empty())
-        ctx->name = value;
+    // add context values (reference: src/context.hpp, include/context.hpp)
+    ctx->forced  = forced;
+    ctx->logging = &logging;
+    ctx->locale  = locale;
 
     try {
-        // actions
         if (list_cmd->parsed())
             list();
         else if (init_cmd->parsed())
-            new_config(dependencies);
-        else if (install_cmd->parsed())
+            new_config(init_opts.name, init_opts.dependencies);
+        else if (install_cmd->parsed()) {
+            ctx->name = install_url;
             install();
-
+        } else if (disable_cmd->parsed())
+            remove_all_symlinks();
         else if (config_cmd->parsed()) {
-            if (validate_cmd->parsed())
-                Config{value}.validate().print();
-            else if (remove_cmd->parsed())
-                remove_config();
-            else if (show_cmd->parsed())
+            ctx->name = config_name;
+
+            if (validate_action->parsed())
+                Config{config_name}.validate().print();
+            else if (show_action->parsed())
                 list();
-            else if (apply_cmd->parsed())
+            else if (apply_action->parsed())
                 apply();
-            else if (disable_cmd->parsed())
-                remove_all_symlinks();
+            else if (delete_action->parsed())
+                remove_config();
             else
                 list();
         }
     } catch (const std::exception &e) {
-        std::cerr << argv[0] << ": " << e.what() << '\n';
+        logging.log(LoggingLevel::ERROR, e.what());
         return EXIT_FAILURE;
     }
+
+    return EXIT_SUCCESS;
 }

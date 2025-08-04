@@ -7,6 +7,8 @@
 #include "context.hpp"
 #include "settings.hpp"
 #include "utils/config.hpp"
+#include "utils/formatting.hpp"
+#include "utils/logging.hpp"
 
 namespace fs = std::filesystem;
 
@@ -18,13 +20,16 @@ namespace fs = std::filesystem;
  * @return the return code 0 for success, 1 for fail/error.
  * */
 int remove_all_symlinks() {
+    auto &logging = ctx->logging;
+    auto &lang    = ctx->locale.json;
+
     std::string active_config_name;
 
     std::ifstream current{state_path + "current_configuration"};
     if (current.good()) {
         std::getline(current, active_config_name);
     } else {
-        std::cerr << "There is no active config!\n";
+        logging->log(LoggingLevel::ERROR, lang["rm_symlinks"]["errors"]["no_active_config"]);
         return 1;
     }
 
@@ -36,16 +41,14 @@ int remove_all_symlinks() {
         const auto dst = dep.at("destination");
 
         if (!fs::exists(dst)) {
-            std::cout << "[ERROR] Couldn't find the destination.\n";
+            logging->log(
+                LoggingLevel::ERROR, replace_format(lang["rm_symlinks"]["errors"]["destination_not_found"], dep_name));
             return 1;
         }
 
-        if (!fs::is_symlink(dst) && ctx->forced == false) {
-            std::cout << "[WARNING] " << dst << "isn't a symlink! Want to delete it? (y/N)";
-            std::string choice;
-            std::getline(std::cin, choice);
-
-            if (choice == "n" || choice == "N" || choice == "")
+        if (!fs::is_symlink(dst) && !ctx->forced) {
+            if (std::get<bool>(logging->prompt(
+                    PromptMode::BOOL, replace_format(lang["rm_symlinks"]["errors"]["not_a_symlink"], dep_name), "0")))
                 continue;
         }
 
