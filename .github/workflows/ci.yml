@@ -80,7 +80,7 @@ jobs:
       - name: Configure Meson
         run: |
           source build/conanbuild.sh
-          meson setup build --native-file=build/conan_meson_native.ini --Dcpp_std=c++23
+          meson setup build --native-file=build/conan_meson_native.ini -Dcpp_std=c++23
 
       - name: Build Project
         run: |
