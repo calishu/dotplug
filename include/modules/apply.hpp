@@ -1,3 +1,3 @@
 #pragma once
 
-int apply();
+auto apply() -> int;

@@ -119,5 +119,12 @@
       "source_not_found": "The source of {} couldn't be found!",
       "destination_not_found": "The destination of {} couldn't be found!"
     }
+  },
+  "rm_symlinks": {
+    "errors": {
+      "destination_not_found": "Couldn't find the destination of {}",
+      "no_active_config": "There is no active config!",
+      "not_a_symlink": "{} isn't a symlink! Want to delete it?"
+    }
   }
 }
