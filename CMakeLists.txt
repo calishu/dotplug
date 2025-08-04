@@ -61,3 +61,5 @@ endif()
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 add_executable(dotplug ${SOURCES})
+
+target_include_directories(dotplug PRIVATE include)
