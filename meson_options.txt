@@ -4,3 +4,4 @@ option(
   value: false,
   description: 'Do you want to create the release build?',
 )
+option('build_tests', type: 'boolean', value: false, description: 'Building tests')

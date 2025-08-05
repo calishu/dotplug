@@ -2,6 +2,7 @@
 tomlplusplus/3.4.0
 cli11/2.5.0
 nlohmann_json/3.12.0
+catch2/3.9.0
 
 [generators]
 MesonToolchain

@@ -49,3 +49,15 @@ executable(
   dependencies: [cli11_dep, tomlpp_dep, nlohmann_json],
   include_directories: include_dir,
 )
+
+if get_option('build_tests')
+  catch2_dep = dependency('catch2', method: 'pkg-config', required: true)
+  test_files = files('tests/main.cpp')
+
+  test_exe = executable('tests',
+    test_files,
+    dependencies: [catch2_dep],
+    include_directories: include_dir
+  )
+  test('tests', test_exe)
+endif
