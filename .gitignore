@@ -1,4 +1,6 @@
 *.log
 build/
 .cache/
-.vscode
+.vscode/
+.idea/
+flake.lock
