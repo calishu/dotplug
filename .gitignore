@@ -3,6 +3,5 @@ build/
 .cache/
 .vscode/
 .idea/
-flake.lock
 ./subprojects/*
 !./subprojects/*.wrap
